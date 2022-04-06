@@ -1,0 +1,26 @@
+storage:
+  # [DB type]
+  # => mysql        | [Remote] Save the data into Mysql database
+  # => postgresql   | [Remote] Save the data into PostgreSQL database
+  # => sqlite       | [File] Save the data into SQLite database
+  # => h2           | [File] Save the data into H2 database (default)
+  # => yaml         | [File] Save the data into YAML file
+  type: h2
+
+  settings:
+
+    # [Remote DB settings - MySQL / MariaDB / PostgreSQL]
+    remote-db:
+      host: localhost
+      port: 3306
+      database: neweconomy
+      username: root
+      password: ""
+
+    # [SQLite settings] (need .db extension)
+    sqlite: "neweconomy.db"
+
+    # [H2 settings]
+    h2: "neweconomy"
+
+start-money: 0

@@ -1,0 +1,14 @@
+name: NewEconomy
+version: '${project.version}'
+main: me.luucka.neweconomy.NewEconomy
+api-version: 1.18
+softdepend: [ Vault ]
+authors: [ LuuckA ]
+description: Economy Plugin
+libraries:
+  - org.spongepowered:configurate-yaml:${libs.configurate-yaml}
+  - com.zaxxer:HikariCP:${libs.hikaricp}
+  - mysql:mysql-connector-java:${libs.mysql}
+  - org.postgresql:postgresql:${libs.postgresql}
+  - org.xerial:sqlite-jdbc:${libs.sqlite}
+  - com.h2database:h2:${libs.h2}
