@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+import static me.luucka.neweconomy.utils.Color.colorize;
+
 public abstract class BaseCommand extends BukkitCommand {
 
     public BaseCommand(String name, String description) {
@@ -34,19 +36,19 @@ public abstract class BaseCommand extends BukkitCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         try {
-            execute(sender, args);
+            execute(new CommandSource(sender), args);
         } catch (Exception e) {
-            sender.sendMessage(e.getMessage());
+            sender.sendMessage(colorize(e.getMessage()));
         }
         return false;
     }
 
-    public abstract void execute(CommandSender sender, String[] args) throws Exception;
+    public abstract void execute(CommandSource sender, String[] args) throws Exception;
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return onTabComplete(sender, args);
+        return onTabComplete(new CommandSource(sender), args);
     }
 
-    public abstract List<String> onTabComplete(CommandSender sender, String[] args);
+    public abstract List<String> onTabComplete(CommandSource sender, String[] args);
 }

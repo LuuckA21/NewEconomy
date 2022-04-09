@@ -1,1 +1,23 @@
-ciao: "ciao"
+prefix: "&7[#2fba54New#ffe921Economy&7]"
+
+no-permission: "&cYou do not have permission"
+no-console: "&cConsole cannot run this command"
+
+reload: "&aPlugin reloaded!"
+
+command-usage: "&cUsage: {COMMAND_USAGE}"
+
+balance: "&aBalance: &6{MONEY}"
+balance-other: "&7{PLAYER}'s &abalance: &6{MONEY}"
+
+add:
+  your-account: "&6{MONEY} &ahas been added to your balance"
+  other-account: "&6{MONEY} &aadded to &7{PLAYER}'s &abalance"
+take:
+  your-account: "&6{MONEY} &ahas been taken from your balance"
+  other-account: "&6{MONEY} &ataken from &7{PLAYER}'s &abalance"
+set:
+  your-account: "&aYour balance was set to &6{MONEY}"
+  other-account: "&aYou set &7{PLAYER}'s &abalance to &6{MONEY}"
+
+user-not-exists: "&cThe user &7{PLAYER} &cdoes not exist"

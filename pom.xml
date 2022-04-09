@@ -16,9 +16,12 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <libs.vault>1.7</libs.vault>
+
         <!-- Dev libs -->
         <libs.lombok>1.18.22</libs.lombok>
         <libs.configurate-yaml>4.1.2</libs.configurate-yaml>
+        <libs.opencsv>5.6</libs.opencsv>
 
         <libs.hikaricp>5.0.1</libs.hikaricp>
         <libs.mysql>8.0.28</libs.mysql>
@@ -84,6 +87,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -91,6 +98,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>${libs.vault}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -103,6 +116,12 @@
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-yaml</artifactId>
             <version>${libs.configurate-yaml}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${libs.opencsv}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

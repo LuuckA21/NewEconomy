@@ -44,7 +44,6 @@ public class DBConnection {
             config.setUsername(PLUGIN.getSettings().getDbUsername());
             config.setPassword(PLUGIN.getSettings().getDbPassword());
         }
-
         dbSource = new HikariDataSource(config);
     }
 

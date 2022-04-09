@@ -47,11 +47,9 @@ public class Settings implements IConfig {
 
     public String getDBStringConnection() {
         if (REMOTE_DB_STORAGE_TYPES.contains(storageType)) {
-            // "jdbc:" + storageType + "://" + host + ":" + port + "/" + database
             return String.format("jdbc:%s://%s:%s/%s", storageType, dbHost, dbPort, dbName);
         }
         if (FILE_DB_STORAGE_TYPES.contains(storageType)) {
-            // "jdbc:" + storageType + ":" + PLUGIN.getDataFolder().getAbsolutePath() + "/" + PLUGIN.getConfig().getString("storage.settings." + storageType)
             String dbFile = PLUGIN.getDataFolder().getAbsolutePath() + "/";
             if (storageType.equals("h2")) dbFile += h2DbName;
             if (storageType.equals("sqlite")) dbFile += sqliteDbName;

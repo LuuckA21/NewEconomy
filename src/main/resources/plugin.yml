@@ -7,8 +7,30 @@ authors: [ LuuckA ]
 description: Economy Plugin
 libraries:
   - org.spongepowered:configurate-yaml:${libs.configurate-yaml}
+  - com.opencsv:opencsv:${libs.opencsv}
   - com.zaxxer:HikariCP:${libs.hikaricp}
   - mysql:mysql-connector-java:${libs.mysql}
   - org.postgresql:postgresql:${libs.postgresql}
   - org.xerial:sqlite-jdbc:${libs.sqlite}
   - com.h2database:h2:${libs.h2}
+permissions:
+  neweconomy.*:
+    default: op
+    description: Give players with op everything by default
+    children:
+      neweconomy.admin: true
+      neweconomy.eco: true
+      neweconomy.bal: true
+      neweconomy.bal.others: true
+  neweconomy.admin:
+    default: op
+    description: Reload plugin
+  neweconomy.eco:
+    default: op
+    description: Give access to /economy command
+  neweconomy.bal:
+    default: true
+    description: Give access to /balance command
+  neweconomy.bal.others:
+    default: op
+    description: Give access to /balance <player> command
