@@ -1,7 +1,6 @@
 package me.luucka.neweconomy.hooks;
 
 import me.luucka.neweconomy.NewEconomy;
-import me.luucka.neweconomy.User;
 import me.luucka.neweconomy.api.IUser;
 import me.luucka.neweconomy.exceptions.UserNotExistsException;
 import net.milkbowl.vault.economy.Economy;
@@ -12,11 +11,8 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 public class VaultNewEconomy implements Economy {
-
-    private static final Logger LOGGER = Logger.getLogger("NewEconomy");
 
     private final NewEconomy PLUGIN;
 
@@ -64,16 +60,18 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        final OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(playerName);
-        if (player == null) return false;
-        final IUser user = new User(PLUGIN, player);
-        return user.exists();
+        try {
+            PLUGIN.getUserMap().getUser(playerName);
+            return true;
+        } catch (UserNotExistsException e) {
+            return false;
+        }
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        final IUser user = new User(PLUGIN, player);
-        return user.exists();
+        final IUser user = PLUGIN.getUserMap().getUser(player);
+        return user != null;
     }
 
     @Override
@@ -88,24 +86,17 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        final OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(playerName);
-        if (player == null) return PLUGIN.getSettings().getStartMoney();
-        final IUser user = new User(PLUGIN, player);
         try {
+            IUser user = PLUGIN.getUserMap().getUser(playerName);
             return user.getMoney();
         } catch (UserNotExistsException e) {
-            return PLUGIN.getSettings().getStartMoney();
+            return 0;
         }
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        final IUser user = new User(PLUGIN, player);
-        try {
-            return user.getMoney();
-        } catch (UserNotExistsException e) {
-            return PLUGIN.getSettings().getStartMoney();
-        }
+        return PLUGIN.getUserMap().getUser(player).getMoney();
     }
 
     @Override
@@ -120,11 +111,9 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        final OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(playerName);
-        if (player == null) return false;
-        final IUser user = new User(PLUGIN, player);
         try {
-            return (user.getMoney() - amount) >= 0;
+            IUser user = PLUGIN.getUserMap().getUser(playerName);
+            return user.getMoney() - amount >= 0;
         } catch (UserNotExistsException e) {
             return false;
         }
@@ -132,12 +121,7 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        final IUser user = new User(PLUGIN, player);
-        try {
-            return (user.getMoney() - amount) >= 0;
-        } catch (UserNotExistsException e) {
-            return false;
-        }
+        return PLUGIN.getUserMap().getUser(player).getMoney() - amount >= 0;
     }
 
     @Override
@@ -152,10 +136,8 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        final OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(playerName);
-        if (player == null) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Player name cannot be null");
-        final IUser user = new User(PLUGIN, player);
         try {
+            IUser user = PLUGIN.getUserMap().getUser(playerName);
             user.takeMoney((int) amount);
             return new EconomyResponse(amount, user.getMoney(), EconomyResponse.ResponseType.SUCCESS, null);
         } catch (UserNotExistsException e) {
@@ -165,13 +147,9 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        final IUser user = new User(PLUGIN, player);
-        try {
-            user.takeMoney((int) amount);
-            return new EconomyResponse(amount, user.getMoney(), EconomyResponse.ResponseType.SUCCESS, null);
-        } catch (UserNotExistsException e) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Player name cannot be null");
-        }
+        final IUser user = PLUGIN.getUserMap().getUser(player);
+        user.takeMoney((int) amount);
+        return new EconomyResponse(amount, user.getMoney(), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -186,10 +164,8 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        final OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(playerName);
-        if (player == null) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Player name cannot be null");
-        final IUser user = new User(PLUGIN, player);
         try {
+            IUser user = PLUGIN.getUserMap().getUser(playerName);
             user.addMoney((int) amount);
             return new EconomyResponse(amount, user.getMoney(), EconomyResponse.ResponseType.SUCCESS, null);
         } catch (UserNotExistsException e) {
@@ -199,13 +175,9 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        final IUser user = new User(PLUGIN, player);
-        try {
-            user.addMoney((int) amount);
-            return new EconomyResponse(amount, user.getMoney(), EconomyResponse.ResponseType.SUCCESS, null);
-        } catch (UserNotExistsException e) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Player name cannot be null");
-        }
+        final IUser user = PLUGIN.getUserMap().getUser(player);
+        user.addMoney((int) amount);
+        return new EconomyResponse(amount, user.getMoney(), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -280,26 +252,12 @@ public class VaultNewEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        final OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(playerName);
-        if (player == null) return false;
-        final IUser user = new User(PLUGIN, player);
-        if (user.exists()) {
-            return false;
-        } else {
-            user.create();
-            return true;
-        }
+        return false;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        final IUser user = new User(PLUGIN, player);
-        if (user.exists()) {
-            return false;
-        } else {
-            user.create();
-            return true;
-        }
+        return false;
     }
 
     @Override

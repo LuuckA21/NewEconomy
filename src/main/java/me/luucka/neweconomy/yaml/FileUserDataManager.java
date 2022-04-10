@@ -3,7 +3,6 @@ package me.luucka.neweconomy.yaml;
 import me.luucka.neweconomy.IUserDataManager;
 import me.luucka.neweconomy.NewEconomy;
 import me.luucka.neweconomy.config.BaseConfiguration;
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
 import org.bukkit.OfflinePlayer;
 
 import java.io.File;
@@ -56,79 +55,54 @@ public class FileUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public int getUserMoney(OfflinePlayer player) throws UserNotExistsException {
-        final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
-        return configuration.getInt("money", 0);
+    public int getUserMoney(OfflinePlayer player) {
+        return usersData.get(player.getUniqueId()).getInt("money", 0);
     }
 
     @Override
-    public void setUserMoney(OfflinePlayer player, int money) throws UserNotExistsException {
+    public void setUserMoney(OfflinePlayer player, int money) {
         final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
         configuration.setProperty("money", money);
         configuration.save();
     }
 
     @Override
-    public void addUserMoney(OfflinePlayer player, int money) throws UserNotExistsException {
+    public void addUserMoney(OfflinePlayer player, int money) {
         setUserMoney(player, getUserMoney(player) + money);
     }
 
     @Override
-    public void takeUserMoney(OfflinePlayer player, int money) throws UserNotExistsException {
+    public void takeUserMoney(OfflinePlayer player, int money) {
         money = getUserMoney(player) - money;
         if (money < 0) money = 0;
         setUserMoney(player, money);
     }
 
     @Override
-    public long getUserAccountCreation(OfflinePlayer player) throws UserNotExistsException {
-        final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
-        return configuration.getLong("account-creation", 0L);
+    public long getUserAccountCreation(OfflinePlayer player) {
+        return usersData.get(player.getUniqueId()).getLong("account-creation", 0L);
     }
 
     @Override
-    public long getUserLastTransaction(OfflinePlayer player) throws UserNotExistsException {
-        final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
-        return configuration.getLong("last-transaction", -1L);
+    public long getUserLastTransaction(OfflinePlayer player) {
+        return usersData.get(player.getUniqueId()).getLong("last-transaction", -1L);
     }
 
     @Override
-    public void setUserLastTransaction(OfflinePlayer player) throws UserNotExistsException {
+    public void setUserLastTransaction(OfflinePlayer player) {
         final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
         configuration.setProperty("last-transaction", System.currentTimeMillis());
         configuration.save();
     }
 
     @Override
-    public String getUserLastAccountName(OfflinePlayer player) throws UserNotExistsException {
-        final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
-        return configuration.getString("last-account-name", "NULL");
+    public String getUserLastAccountName(OfflinePlayer player) {
+        return usersData.get(player.getUniqueId()).getString("last-account-name", "NULL");
     }
 
     @Override
-    public void setUserLastAccountName(OfflinePlayer player) throws UserNotExistsException {
+    public void setUserLastAccountName(OfflinePlayer player) {
         final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        if (configuration == null) {
-            throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-        }
         configuration.setProperty("last-account-name", player.getName());
         configuration.save();
     }

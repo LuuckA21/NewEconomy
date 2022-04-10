@@ -1,10 +1,8 @@
 package me.luucka.neweconomy.commands;
 
 import me.luucka.neweconomy.NewEconomy;
-import me.luucka.neweconomy.User;
 import me.luucka.neweconomy.api.IUser;
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
-import org.bukkit.OfflinePlayer;
+import me.luucka.neweconomy.exceptions.InsufficientPermissionException;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -23,16 +21,13 @@ public class BalanceCommand extends BaseCommand {
     @Override
     public void execute(CommandSource sender, String[] args) throws Exception {
         if (args.length == 0 && sender.isPlayer()) {
-            final IUser user = new User(PLUGIN, sender.getPlayer());
-            sender.sendMessage(PLUGIN.getMessages().getBalance(user.getMoney()));
+            sender.sendMessage(PLUGIN.getMessages().getBalance(sender.getUser(PLUGIN).getMoney()));
         } else if (args.length >= 1 && sender.hasPermission("neweconomy.bal.others")) {
-            OfflinePlayer player = PLUGIN.getUserCacheManager().getPlayer(args[0]);
-            if (player == null) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(args[0]));
-            final IUser user = new User(PLUGIN, player);
-            sender.sendMessage(PLUGIN.getMessages().getBalanceOther(player.getName(), user.getMoney()));
+            final IUser user = PLUGIN.getUserMap().getUser(args[0]);
+            sender.sendMessage(PLUGIN.getMessages().getBalanceOther(user.getLastAccountName(), user.getMoney()));
         } else {
             if (sender.isPlayer()) {
-                sender.sendMessage(PLUGIN.getMessages().getNoPermission());
+                throw new InsufficientPermissionException(PLUGIN.getMessages().getNoPermission());
             } else {
                 sender.sendMessage(PLUGIN.getMessages().getNoConsole());
             }

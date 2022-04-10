@@ -5,6 +5,7 @@ import me.luucka.neweconomy.commands.BalanceCommand;
 import me.luucka.neweconomy.commands.EcoCommand;
 import me.luucka.neweconomy.commands.ReloadCommand;
 import me.luucka.neweconomy.database.DBUserDataManager;
+import me.luucka.neweconomy.hooks.PlaceholderNewEconomy;
 import me.luucka.neweconomy.hooks.VaultNewEconomy;
 import me.luucka.neweconomy.listeners.PlayerListeners;
 import me.luucka.neweconomy.yaml.FileUserDataManager;
@@ -34,7 +35,7 @@ public final class NewEconomy extends JavaPlugin {
     private IUserDataManager userDataManager;
 
     @Getter
-    private UserCacheManager userCacheManager;
+    private UserMap userMap;
 
     @Override
     public void onEnable() {
@@ -46,9 +47,13 @@ public final class NewEconomy extends JavaPlugin {
             LOGGER.log(Level.INFO, "Find Vault...");
             LOGGER.log(Level.INFO, "Hook Vault for Economy management");
         } catch (final ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Vault not found... disabling plugin");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            LOGGER.log(Level.SEVERE, "Vault not found... NewEconomy will not works with Vault");
+        }
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderNewEconomy(this).register();
+            LOGGER.log(Level.INFO, "Find PlaceholderAPI...");
+            LOGGER.log(Level.INFO, "Hook PlaceholderAPI for Placeholders management");
         }
 
         settings = new Settings(this);
@@ -56,11 +61,6 @@ public final class NewEconomy extends JavaPlugin {
 
         messages = new Messages(this);
         configList.add(messages);
-
-        userCacheManager = new UserCacheManager(this);
-        userCacheManager.readCSV();
-
-        getServer().getPluginManager().registerEvents(new PlayerListeners(this), this);
 
         if (Settings.REMOTE_DB_STORAGE_TYPES.contains(settings.getStorageType()) || Settings.FILE_DB_STORAGE_TYPES.contains(settings.getStorageType())) {
             try {
@@ -77,6 +77,12 @@ public final class NewEconomy extends JavaPlugin {
         }
         configList.add(userDataManager);
 
+        userMap = new UserMap(this);
+        userMap.reloadConfig();
+        configList.add(userMap);
+
+        getServer().getPluginManager().registerEvents(new PlayerListeners(this), this);
+
         new BalanceCommand(this);
         new EcoCommand(this);
         new ReloadCommand(this);
@@ -84,9 +90,7 @@ public final class NewEconomy extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (userCacheManager != null) {
-            userCacheManager.writeCSV();
-        }
+        userMap.getUuidMap().shutdown();
     }
 
     public void reload() {

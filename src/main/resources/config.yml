@@ -3,13 +3,13 @@ storage:
   # => mysql        | [Remote] Save the data into Mysql database
   # => postgresql   | [Remote] Save the data into PostgreSQL database
   # => sqlite       | [File] Save the data into SQLite database
-  # => h2           | [File] Save the data into H2 database (default)
-  # => yaml         | [File] Save the data into YAML file
+  # => h2           | [File] Save the data into H2 database
+  # => yaml         | [File] Save the data into YAML file (default)
   type: yaml
 
   settings:
 
-    # [Remote DB settings - MySQL / MariaDB / PostgreSQL]
+    # [Remote DB settings - MySQL / PostgreSQL]
     remote-db:
       host: localhost
       port: 3306
@@ -24,3 +24,7 @@ storage:
     h2: "neweconomy"
 
 start-money: 0
+
+# Date format legend: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/SimpleDateFormat.html
+# Test format: https://javadevtools.com/simpledateformat
+date-format: "MMM-d-y HH:m:s"

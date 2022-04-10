@@ -1,6 +1,5 @@
 package me.luucka.neweconomy;
 
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
@@ -11,22 +10,22 @@ public interface IUserDataManager extends IConfig {
 
     boolean userExists(UUID uuid);
 
-    int getUserMoney(OfflinePlayer player) throws UserNotExistsException;
+    int getUserMoney(OfflinePlayer player);
 
-    void setUserMoney(OfflinePlayer player, int money) throws UserNotExistsException;
+    void setUserMoney(OfflinePlayer player, int money);
 
-    void addUserMoney(OfflinePlayer player, int money) throws UserNotExistsException;
+    void addUserMoney(OfflinePlayer player, int money);
 
-    void takeUserMoney(OfflinePlayer player, int money) throws UserNotExistsException;
+    void takeUserMoney(OfflinePlayer player, int money);
 
-    long getUserAccountCreation(OfflinePlayer player) throws UserNotExistsException;
+    long getUserAccountCreation(OfflinePlayer player);
 
-    long getUserLastTransaction(OfflinePlayer player) throws UserNotExistsException;
+    long getUserLastTransaction(OfflinePlayer player);
 
-    void setUserLastTransaction(OfflinePlayer player) throws UserNotExistsException;
+    void setUserLastTransaction(OfflinePlayer player);
 
-    String getUserLastAccountName(OfflinePlayer player) throws UserNotExistsException;
+    String getUserLastAccountName(OfflinePlayer player);
 
-    void setUserLastAccountName(OfflinePlayer player) throws UserNotExistsException;
+    void setUserLastAccountName(OfflinePlayer player);
 
 }

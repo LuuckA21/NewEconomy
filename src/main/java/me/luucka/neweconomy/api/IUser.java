@@ -1,29 +1,27 @@
 package me.luucka.neweconomy.api;
 
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
-
 public interface IUser {
 
     void create();
 
     boolean exists();
 
-    int getMoney() throws UserNotExistsException;
+    int getMoney();
 
-    void setMoney(int money) throws UserNotExistsException;
+    void setMoney(int money);
 
-    void addMoney(int money) throws UserNotExistsException;
+    void addMoney(int money);
 
-    void takeMoney(int money) throws UserNotExistsException;
+    void takeMoney(int money);
 
-    long getAccountCreation() throws UserNotExistsException;
+    long getAccountCreation();
 
-    long getLastTransaction() throws UserNotExistsException;
+    long getLastTransaction();
 
-    void setLastTransaction() throws UserNotExistsException;
+    void setLastTransaction();
 
-    String getLastAccountName() throws UserNotExistsException;
+    String getLastAccountName();
 
-    void setLastAccountName() throws UserNotExistsException;
+    void setLastAccountName();
 
 }

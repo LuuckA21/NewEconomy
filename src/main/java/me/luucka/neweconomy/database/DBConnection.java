@@ -8,11 +8,8 @@ import me.luucka.neweconomy.Settings;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class DBConnection {
-
-    private static final Logger LOGGER = Logger.getLogger("NewEconomy");
 
     private static final Map<String, String> CLASS_DRIVER = new HashMap<>();
 

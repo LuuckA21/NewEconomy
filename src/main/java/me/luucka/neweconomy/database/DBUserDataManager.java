@@ -2,7 +2,6 @@ package me.luucka.neweconomy.database;
 
 import me.luucka.neweconomy.IUserDataManager;
 import me.luucka.neweconomy.NewEconomy;
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
 import org.bukkit.OfflinePlayer;
 
 import java.sql.Connection;
@@ -10,11 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class DBUserDataManager implements IUserDataManager {
-
-    private static final Logger LOGGER = Logger.getLogger("NewEconomy");
 
     private final NewEconomy PLUGIN;
     private final DBConnection dbConnection;
@@ -61,8 +57,6 @@ public class DBUserDataManager implements IUserDataManager {
 
     @Override
     public void createUser(OfflinePlayer player) {
-        if (userExists(player.getUniqueId())) return;
-
         try (Connection conn = dbConnection.getDbSource().getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO userdata (uuid, money, account_creation, last_transaction, last_account_name) VALUES(?,?,?,?,?)")) {
             ps.setString(1, player.getUniqueId().toString());
@@ -77,9 +71,7 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public int getUserMoney(OfflinePlayer player) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public int getUserMoney(OfflinePlayer player) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT money FROM userdata WHERE uuid=?")) {
             ps.setString(1, player.getUniqueId().toString());
@@ -92,9 +84,7 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public void setUserMoney(OfflinePlayer player, int money) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public void setUserMoney(OfflinePlayer player, int money) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE userdata SET money=? WHERE uuid=?")) {
             ps.setInt(1, money);
@@ -106,21 +96,19 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public void addUserMoney(OfflinePlayer player, int money) throws UserNotExistsException {
+    public void addUserMoney(OfflinePlayer player, int money) {
         setUserMoney(player, getUserMoney(player) + money);
     }
 
     @Override
-    public void takeUserMoney(OfflinePlayer player, int money) throws UserNotExistsException {
+    public void takeUserMoney(OfflinePlayer player, int money) {
         money = getUserMoney(player) - money;
         if (money < 0) money = 0;
         setUserMoney(player, money);
     }
 
     @Override
-    public long getUserAccountCreation(OfflinePlayer player) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public long getUserAccountCreation(OfflinePlayer player) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT account_creation FROM userdata WHERE uuid=?")) {
             ps.setString(1, player.getUniqueId().toString());
@@ -133,9 +121,7 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public long getUserLastTransaction(OfflinePlayer player) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public long getUserLastTransaction(OfflinePlayer player) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT last_transaction FROM userdata WHERE uuid=?")) {
             ps.setString(1, player.getUniqueId().toString());
@@ -148,9 +134,7 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public void setUserLastTransaction(OfflinePlayer player) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public void setUserLastTransaction(OfflinePlayer player) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE userdata SET last_transaction=? WHERE uuid=?")) {
             ps.setLong(1, System.currentTimeMillis());
@@ -162,9 +146,7 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public String getUserLastAccountName(OfflinePlayer player) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public String getUserLastAccountName(OfflinePlayer player) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT last_account_name FROM userdata WHERE uuid=?")) {
             ps.setString(1, player.getUniqueId().toString());
@@ -177,9 +159,7 @@ public class DBUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public void setUserLastAccountName(OfflinePlayer player) throws UserNotExistsException {
-        if (!userExists(player.getUniqueId())) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(player.getName()));
-
+    public void setUserLastAccountName(OfflinePlayer player) {
         try (Connection conn = dbConnection.getDbSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE userdata SET last_account_name=? WHERE uuid=?")) {
             ps.setString(1, player.getName());

@@ -9,10 +9,8 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,39 +49,6 @@ public final class BaseConfiguration {
 
     public File getFile() {
         return configFile;
-    }
-
-    public void setProperty(final String path, final List<?> list) {
-        setInternal(path, list);
-    }
-
-    public <T> void setExplicitList(final String path, final List<T> list, final Type type) {
-        try {
-            toSplitRoot(path, configurationNode).set(type, list);
-        } catch (SerializationException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-
-    public <T> List<T> getList(final String path, Class<T> type) {
-        final CommentedConfigurationNode node = getInternal(path);
-        if (node == null) {
-            return new ArrayList<>();
-        }
-
-        try {
-            final List<T> list = node.getList(type);
-            if (list == null) return new ArrayList<>();
-            return list;
-        } catch (SerializationException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return new ArrayList<>();
-        }
-    }
-
-    public boolean isList(String path) {
-        final CommentedConfigurationNode node = getInternal(path);
-        return node != null && node.isList();
     }
 
     public void setProperty(final String path, final String value) {
@@ -168,14 +133,6 @@ public final class BaseConfiguration {
 
     public CommentedConfigurationNode newSection() {
         return loader.createNode();
-    }
-
-    public Set<String> getKeys() {
-        return ConfigurateUtil.getKeys(configurationNode);
-    }
-
-    public Map<String, CommentedConfigurationNode> getMap() {
-        return ConfigurateUtil.getMap(configurationNode);
     }
 
     public void removeProperty(String path) {

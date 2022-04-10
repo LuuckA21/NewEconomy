@@ -3,7 +3,6 @@ package me.luucka.neweconomy.commands;
 import lombok.Getter;
 import lombok.Setter;
 import me.luucka.neweconomy.NewEconomy;
-import me.luucka.neweconomy.User;
 import me.luucka.neweconomy.api.IUser;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public final class CommandSource {
 
     public IUser getUser(final NewEconomy plugin) {
         if (sender instanceof Player player) {
-            return new User(plugin, player);
+            return plugin.getUserMap().getUser(player);
         }
         return null;
     }

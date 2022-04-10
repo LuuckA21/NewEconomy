@@ -2,18 +2,14 @@ package me.luucka.neweconomy.commands;
 
 import com.google.common.collect.Lists;
 import me.luucka.neweconomy.NewEconomy;
-import me.luucka.neweconomy.User;
 import me.luucka.neweconomy.api.IUser;
+import me.luucka.neweconomy.exceptions.InsufficientPermissionException;
 import me.luucka.neweconomy.exceptions.NotEnoughArgumentsException;
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static me.luucka.neweconomy.utils.Color.colorize;
 
 public class EcoCommand extends BaseCommand {
 
@@ -27,22 +23,23 @@ public class EcoCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSource sender, String[] args) throws Exception {
+        if (!testPermissionSilent(sender.getSender())) throw new InsufficientPermissionException(PLUGIN.getMessages().getNoPermission());
+
         if (args.length < 2) throw new NotEnoughArgumentsException(PLUGIN.getMessages().getCommandUsage(getUsage()));
 
         final CommandType cmd;
-        final OfflinePlayer player;
+        final IUser user;
         final int money;
 
         try {
             cmd = CommandType.valueOf(args[0].toUpperCase());
         } catch (final IllegalArgumentException ex) {
-            throw new Exception(colorize(getUsage()));
+            throw new Exception(PLUGIN.getMessages().getCommandUsage(getUsage()));
         }
 
         if (cmd != CommandType.RESET && args.length < 3) throw new NotEnoughArgumentsException(PLUGIN.getMessages().getCommandUsage(getUsage()));
 
-        player = PLUGIN.getUserCacheManager().getPlayer(args[1]);
-        if (player == null) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(args[1]));
+        user = PLUGIN.getUserMap().getUser(args[1]);
 
         try {
             money = cmd == CommandType.RESET ? PLUGIN.getSettings().getStartMoney() : Integer.parseInt(args[2]);
@@ -51,26 +48,26 @@ public class EcoCommand extends BaseCommand {
             throw new Exception("&cPlease insert a positive integer");
         }
 
-        final IUser user = new User(PLUGIN, player);
-
         switch (cmd) {
             case ADD -> {
                 user.addMoney(money);
-                sender.sendMessage(PLUGIN.getMessages().getAddOtherAccount(player.getName(), money));
+                sender.sendMessage(PLUGIN.getMessages().getAddOtherAccount(user.getLastAccountName(), money));
             }
             case TAKE -> {
                 user.takeMoney(money);
-                sender.sendMessage(PLUGIN.getMessages().getTakeOtherAccount(player.getName(), money));
+                sender.sendMessage(PLUGIN.getMessages().getTakeOtherAccount(user.getLastAccountName(), money));
             }
             case SET, RESET -> {
                 user.setMoney(money);
-                sender.sendMessage(PLUGIN.getMessages().getSetOtherAccount(player.getName(), money));
+                sender.sendMessage(PLUGIN.getMessages().getSetOtherAccount(user.getLastAccountName(), money));
             }
         }
     }
 
     @Override
     public List<String> onTabComplete(CommandSource sender, String[] args) {
+        if (!testPermissionSilent(sender.getSender())) return Collections.emptyList();
+
         if (args.length == 1) {
             final List<String> options = new ArrayList<>();
             for (final CommandType ct : CommandType.values()) {

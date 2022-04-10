@@ -1,7 +1,6 @@
 package me.luucka.neweconomy;
 
 import me.luucka.neweconomy.api.IUser;
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
 import org.bukkit.OfflinePlayer;
 
 import static me.luucka.neweconomy.utils.Color.colorize;
@@ -10,73 +9,83 @@ public class User implements IUser {
 
     private final NewEconomy PLUGIN;
     private final OfflinePlayer player;
-    private final IUserDataManager data;
+    private final IUserDataManager userDataManager;
+
+    private int money;
+    private final long accountCreation;
+    private long lastTransaction;
+    private String lastAccountName;
 
     public User(final NewEconomy plugin, final OfflinePlayer player) {
         this.PLUGIN = plugin;
         this.player = player;
-        this.data = this.PLUGIN.getUserDataManager();
+        this.userDataManager = this.PLUGIN.getUserDataManager();
+
+        if (!exists()) {
+            create();
+        }
+
+        this.money = userDataManager.getUserMoney(player);
+        this.accountCreation = userDataManager.getUserAccountCreation(player);
+        this.lastTransaction = userDataManager.getUserLastTransaction(player);
+        setLastAccountName();
+
     }
 
-    @Override
     public void create() {
-        data.createUser(player);
+        userDataManager.createUser(player);
     }
 
-    @Override
     public boolean exists() {
-        return data.userExists(player.getUniqueId());
+        return userDataManager.userExists(player.getUniqueId());
     }
 
-    @Override
-    public int getMoney() throws UserNotExistsException {
-        return data.getUserMoney(player);
+    public int getMoney() {
+        return money;
     }
 
-    @Override
-    public void setMoney(int money) throws UserNotExistsException {
-        data.setUserMoney(player, money);
+    public void setMoney(int money) {
+        this.money = money;
+        userDataManager.setUserMoney(player, money);
         setLastTransaction();
         _sendMessage(PLUGIN.getMessages().getSetYourAccount(money));
     }
 
-    @Override
-    public void addMoney(int money) throws UserNotExistsException {
-        data.addUserMoney(player, money);
+    public void addMoney(int money) {
+        this.money += money;
+        userDataManager.addUserMoney(player, money);
         setLastTransaction();
         _sendMessage(PLUGIN.getMessages().getAddYourAccount(money));
     }
 
-    @Override
-    public void takeMoney(int money) throws UserNotExistsException {
-        data.takeUserMoney(player, money);
+    public void takeMoney(int money) {
+        this.money -= money;
+        if (this.money < 0) this.money = 0;
+        userDataManager.takeUserMoney(player, money);
         setLastTransaction();
         _sendMessage(PLUGIN.getMessages().getTakeYourAccount(money));
     }
 
-    @Override
-    public long getAccountCreation() throws UserNotExistsException {
-        return data.getUserAccountCreation(player);
+    public long getAccountCreation() {
+        return accountCreation;
     }
 
-    @Override
-    public long getLastTransaction() throws UserNotExistsException {
-        return data.getUserLastTransaction(player);
+    public long getLastTransaction() {
+        return lastTransaction;
     }
 
-    @Override
-    public void setLastTransaction() throws UserNotExistsException {
-        data.setUserLastTransaction(player);
+    public void setLastTransaction() {
+        this.lastTransaction = System.currentTimeMillis();
+        userDataManager.setUserLastTransaction(player);
     }
 
-    @Override
-    public String getLastAccountName() throws UserNotExistsException {
-        return data.getUserLastAccountName(player);
+    public String getLastAccountName() {
+        return lastAccountName;
     }
 
-    @Override
-    public void setLastAccountName() throws UserNotExistsException {
-        data.setUserLastAccountName(player);
+    public void setLastAccountName() {
+        this.lastAccountName = player.getName();
+        userDataManager.setUserLastAccountName(player);
     }
 
     private void _sendMessage(final String message) {

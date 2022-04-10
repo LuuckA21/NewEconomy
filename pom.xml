@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>
@@ -17,11 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <libs.vault>1.7</libs.vault>
+        <libs.placeholderapi>2.11.1</libs.placeholderapi>
 
         <!-- Dev libs -->
         <libs.lombok>1.18.22</libs.lombok>
         <libs.configurate-yaml>4.1.2</libs.configurate-yaml>
-        <libs.opencsv>5.6</libs.opencsv>
 
         <libs.hikaricp>5.0.1</libs.hikaricp>
         <libs.mysql>8.0.28</libs.mysql>
@@ -91,6 +91,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -107,6 +111,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>${libs.placeholderapi}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${libs.lombok}</version>
@@ -116,12 +126,6 @@
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-yaml</artifactId>
             <version>${libs.configurate-yaml}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>${libs.opencsv}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
