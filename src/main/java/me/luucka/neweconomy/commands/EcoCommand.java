@@ -16,7 +16,7 @@ public class EcoCommand extends BaseCommand {
     private final NewEconomy PLUGIN;
 
     public EcoCommand(final NewEconomy plugin) {
-        super("economy", "Economy admin commands", "neweconomy.eco", "eco");
+        super("economy", "Economy admin command", "neweconomy.eco", "eco");
         this.PLUGIN = plugin;
         this.setUsage("/economy <add | take | set | reset> <player> [money]");
     }
@@ -45,7 +45,7 @@ public class EcoCommand extends BaseCommand {
             money = cmd == CommandType.RESET ? PLUGIN.getSettings().getStartMoney() : Integer.parseInt(args[2]);
             if (money < 0) throw new NumberFormatException();
         } catch (final NumberFormatException ex) {
-            throw new Exception("&cPlease insert a positive integer");
+            throw new Exception("<red>Please insert a positive integer");
         }
 
         switch (cmd) {

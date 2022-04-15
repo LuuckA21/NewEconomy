@@ -37,7 +37,7 @@ public class PlaceholderNewEconomy extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         params = params.toLowerCase();
-        IUser user = PLUGIN.getUserMap().getUser(player);
+        IUser user = PLUGIN.getUser(player);
 
         return switch (params) {
             case "balance" -> Integer.toString(user.getMoney());

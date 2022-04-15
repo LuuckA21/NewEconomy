@@ -1,23 +1,23 @@
-prefix: "&7[#2fba54New#ffe921Economy&7]"
+prefix: "<grey>[<#2fba54>New<#ffe921>Economy<grey>]"
 
-no-permission: "&cYou do not have permission"
-no-console: "&cConsole cannot run this command"
+no-permission: "<red>You do not have permission"
+no-console: "<red>Console cannot run this command"
 
-reload: "&aPlugin reloaded!"
+reload: "<green>Plugin reloaded!"
 
-command-usage: "&cUsage: {COMMAND_USAGE}"
+command-usage: "<red>Usage: {COMMAND_USAGE}"
 
-balance: "&aBalance: &6{MONEY}"
-balance-other: "&7{PLAYER}'s &abalance: &6{MONEY}"
+balance: "<green>Balance: <gold>{MONEY}"
+balance-other: "<grey>{PLAYER}'s <green>balance: <gold>{MONEY}"
 
 add:
-  your-account: "&6{MONEY} &ahas been added to your balance"
-  other-account: "&6{MONEY} &aadded to &7{PLAYER}'s &abalance"
+  your-account: "<gold>{MONEY} <green>has been added to your balance"
+  other-account: "<gold>{MONEY} <green>added to <grey>{PLAYER}'s <green>balance"
 take:
-  your-account: "&6{MONEY} &ahas been taken from your balance"
-  other-account: "&6{MONEY} &ataken from &7{PLAYER}'s &abalance"
+  your-account: "<gold>{MONEY} <green>has been taken from your balance"
+  other-account: "<gold>{MONEY} <green>taken from <grey>{PLAYER}'s <green>balance"
 set:
-  your-account: "&aYour balance was set to &6{MONEY}"
-  other-account: "&aYou set &7{PLAYER}'s &abalance to &6{MONEY}"
+  your-account: "<green>Your balance was set to <gold>{MONEY}"
+  other-account: "<green>You set <grey>{PLAYER}'s <green>balance to <gold>{MONEY}"
 
-user-not-exists: "&cThe user &7{PLAYER} &cdoes not exist"
+user-not-exists: "<red>The user <grey>{PLAYER} <red>does not exist"

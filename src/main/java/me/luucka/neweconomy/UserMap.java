@@ -6,19 +6,18 @@ import me.luucka.neweconomy.api.UserNotExistsException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserMap implements IConfig {
 
     private final NewEconomy PLUGIN;
 
     @Getter
-    private final Map<String, UUID> nameUUID = new HashMap<>();
+    private final ConcurrentHashMap<String, UUID> nameUUID = new ConcurrentHashMap<>();
 
     @Getter
-    private final Map<UUID, User> users = new HashMap<>();
+    private final ConcurrentHashMap<UUID, User> users = new ConcurrentHashMap<>();
 
     @Getter
     private final UUIDMap uuidMap;

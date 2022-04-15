@@ -106,59 +106,59 @@ public class Messages implements IConfig {
     }
 
     private String _getPrefix() {
-        String prefix = config.getString("prefix", "&7[#2fba54New#ffe921Economy&7]");
+        String prefix = config.getString("prefix", "<grey>[<#2fba54>New<#ffe921>Economy<grey>]");
         return prefix.isEmpty() ? "" : prefix + " ";
     }
 
     private String _getNoPermission() {
-        return config.getString("no-permission", "&cYou do not have permission");
+        return config.getString("no-permission", "<red>You do not have permission");
     }
 
     private String _getNoConsole() {
-        return config.getString("no-console", "&cConsole cannot run this command");
+        return config.getString("no-console", "<red>Console cannot run this command");
     }
 
     private String _getReload() {
-        return config.getString("reload", "&aPlugin reloaded!");
+        return config.getString("reload", "<green>Plugin reloaded!");
     }
 
     private String _getCommandUsage() {
-        return config.getString("command-usage", "&cUsage: {COMMAND_USAGE}");
+        return config.getString("command-usage", "<red>Usage: {COMMAND_USAGE}");
     }
 
     private String _getBalance() {
-        return config.getString("balance", "&aBalance: &6{MONEY}");
+        return config.getString("balance", "<red>Balance: &6{MONEY}");
     }
 
     private String _getBalanceOther() {
-        return config.getString("balance-other", "&7{PLAYER}'s &abalance: &6{MONEY}");
+        return config.getString("balance-other", "<grey>{PLAYER}'s <green>balance: <gold>{MONEY}");
     }
 
     private String _getAddYourAccount() {
-        return config.getString("add.your-account", "&6{MONEY} &ahas been added to your balance");
+        return config.getString("add.your-account", "<gold>{MONEY} <green>has been added to your balance");
     }
 
     private String _getAddOtherAccount() {
-        return config.getString("add.other-account", "&6{MONEY} &aadded to &7{PLAYER}'s &abalance");
+        return config.getString("add.other-account", "<gold>{MONEY} <green>added to <grey>{PLAYER}'s <green>balance");
     }
 
     private String _getTakeYourAccount() {
-        return config.getString("take.your-account", "&6{MONEY} &ahas been taken from your balance");
+        return config.getString("take.your-account", "<gold>{MONEY} <green>has been taken from your balance");
     }
 
     private String _getTakeOtherAccount() {
-        return config.getString("take.other-account", "&6{MONEY} &ataken from &7{PLAYER}'s &abalance");
+        return config.getString("take.other-account", "<gold>{MONEY} <green>taken from <grey>{PLAYER}'s <green>balance");
     }
 
     private String _getSetYourAccount() {
-        return config.getString("set.your-account", "&aYour balance was set to &6{MONEY}");
+        return config.getString("set.your-account", "<green>Your balance was set to <gold>{MONEY}");
     }
 
     private String _getSetOtherAccount() {
-        return config.getString("set.other-account", "&aYou set &7{PLAYER}'s &abalance to &6{MONEY}");
+        return config.getString("set.other-account", "<green>You set <grey>{PLAYER}'s <green>balance to <gold>{MONEY}");
     }
 
     private String _getYourNotExists() {
-        return config.getString("user-not-exists", "&cThe user &7{PLAYER} &cdoes not exist");
+        return config.getString("user-not-exists", "<red>The user <grey>{PLAYER} <red>does not exist");
     }
 }
