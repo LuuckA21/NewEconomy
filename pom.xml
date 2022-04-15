@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>1.0.0</version>
+    <version>Build-4</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>
@@ -19,7 +19,6 @@
         <libs.vault>1.7</libs.vault>
         <libs.placeholderapi>2.11.1</libs.placeholderapi>
 
-        <!-- Dev libs -->
         <libs.lombok>1.18.22</libs.lombok>
         <libs.configurate-yaml>4.1.2</libs.configurate-yaml>
 
@@ -27,7 +26,7 @@
         <libs.mysql>8.0.28</libs.mysql>
         <libs.postgresql>42.3.3</libs.postgresql>
         <libs.sqlite>3.36.0.3</libs.sqlite>
-        <libs.h2>2.1.210</libs.h2>
+        <libs.h2>2.1.212</libs.h2>
 
     </properties>
 
@@ -80,8 +79,8 @@
 
     <repositories>
         <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
@@ -99,8 +98,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -146,7 +145,6 @@
             <version>${libs.postgresql}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>

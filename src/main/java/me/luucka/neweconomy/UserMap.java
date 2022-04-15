@@ -2,7 +2,7 @@ package me.luucka.neweconomy;
 
 import lombok.Getter;
 import me.luucka.neweconomy.api.IUser;
-import me.luucka.neweconomy.exceptions.UserNotExistsException;
+import me.luucka.neweconomy.api.UserNotExistsException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -50,12 +50,6 @@ public class UserMap implements IConfig {
             user = users.get(player.getUniqueId());
         }
         return user;
-    }
-
-    public void loadUser(final String name) {
-        UUID uuid = nameUUID.get(name.toLowerCase());
-        if (uuid == null) return;
-        loadUser(PLUGIN.getServer().getOfflinePlayer(uuid));
     }
 
     public void loadUser(final OfflinePlayer player) {

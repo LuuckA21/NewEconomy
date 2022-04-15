@@ -23,7 +23,7 @@ public class BalanceCommand extends BaseCommand {
         if (args.length == 0 && sender.isPlayer()) {
             sender.sendMessage(PLUGIN.getMessages().getBalance(sender.getUser(PLUGIN).getMoney()));
         } else if (args.length >= 1 && sender.hasPermission("neweconomy.bal.others")) {
-            final IUser user = PLUGIN.getUserMap().getUser(args[0]);
+            final IUser user = PLUGIN.getUser(args[0]);
             sender.sendMessage(PLUGIN.getMessages().getBalanceOther(user.getLastAccountName(), user.getMoney()));
         } else {
             if (sender.isPlayer()) {

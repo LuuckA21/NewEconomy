@@ -15,7 +15,7 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PLUGIN.getUserMap().addNameUUID(event.getPlayer());
-        PLUGIN.getUserMap().loadUser(event.getPlayer());
+        PLUGIN.addNameUUID(event.getPlayer());
+        PLUGIN.loadUser(event.getPlayer());
     }
 }

@@ -1,6 +1,9 @@
 package me.luucka.neweconomy;
 
 import lombok.Getter;
+import me.luucka.neweconomy.api.INewEconomy;
+import me.luucka.neweconomy.api.IUser;
+import me.luucka.neweconomy.api.UserNotExistsException;
 import me.luucka.neweconomy.commands.BalanceCommand;
 import me.luucka.neweconomy.commands.EcoCommand;
 import me.luucka.neweconomy.commands.ReloadCommand;
@@ -11,6 +14,8 @@ import me.luucka.neweconomy.listeners.PlayerListeners;
 import me.luucka.neweconomy.yaml.FileUserDataManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class NewEconomy extends JavaPlugin {
+public final class NewEconomy extends JavaPlugin implements INewEconomy {
 
     private static final Logger LOGGER = Logger.getLogger("NewEconomy");
 
@@ -97,6 +102,26 @@ public final class NewEconomy extends JavaPlugin {
         for (final IConfig iConfig : configList) {
             iConfig.reloadConfig();
         }
+    }
+
+    @Override
+    public void addNameUUID(Player player) {
+        userMap.addNameUUID(player);
+    }
+
+    @Override
+    public IUser getUser(String name) throws UserNotExistsException {
+        return userMap.getUser(name);
+    }
+
+    @Override
+    public IUser getUser(OfflinePlayer player) {
+        return userMap.getUser(player);
+    }
+
+    @Override
+    public void loadUser(OfflinePlayer player) {
+        userMap.loadUser(player);
     }
 
 }

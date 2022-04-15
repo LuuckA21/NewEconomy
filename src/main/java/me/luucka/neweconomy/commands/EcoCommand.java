@@ -39,7 +39,7 @@ public class EcoCommand extends BaseCommand {
 
         if (cmd != CommandType.RESET && args.length < 3) throw new NotEnoughArgumentsException(PLUGIN.getMessages().getCommandUsage(getUsage()));
 
-        user = PLUGIN.getUserMap().getUser(args[1]);
+        user = PLUGIN.getUser(args[1]);
 
         try {
             money = cmd == CommandType.RESET ? PLUGIN.getSettings().getStartMoney() : Integer.parseInt(args[2]);

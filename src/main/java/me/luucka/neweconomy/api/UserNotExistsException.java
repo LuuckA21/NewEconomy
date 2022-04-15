@@ -1,4 +1,4 @@
-package me.luucka.neweconomy.exceptions;
+package me.luucka.neweconomy.api;
 
 public class UserNotExistsException extends Exception {
 
