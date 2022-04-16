@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>Build-5</version>
+    <version>Build-6</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>
@@ -16,6 +16,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <libs.newaconomyapi>1.0.1</libs.newaconomyapi>
         <libs.vault>1.7</libs.vault>
         <libs.placeholderapi>2.11.1</libs.placeholderapi>
 
@@ -102,6 +103,11 @@
             <artifactId>paper-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LuuckA21</groupId>
+            <artifactId>NewEconomyAPI</artifactId>
+            <version>${libs.newaconomyapi}</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
