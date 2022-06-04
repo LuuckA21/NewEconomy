@@ -1,5 +1,6 @@
 package me.luucka.neweconomy;
 
+import lombok.Getter;
 import me.luucka.neweconomy.config.BaseConfiguration;
 
 import java.io.File;
@@ -28,10 +29,6 @@ public class Messages implements IConfig {
         this.PLUGIN = plugin;
         this.config = new BaseConfiguration(new File(PLUGIN.getDataFolder(), "messages.yml"), "/messages.yml");
         reloadConfig();
-    }
-
-    public String getPrefix() {
-        return prefix;
     }
 
     public String getNoPermission() {

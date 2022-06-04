@@ -111,17 +111,14 @@ public class FileUserDataManager implements IUserDataManager {
     public void reloadConfig() {
         usersData.clear();
         final File[] listOfFiles = dataFolder.listFiles();
-        //LOGGER.warning("listOfFiles.length: " + listOfFiles.length);
         if (listOfFiles.length >= 1) {
             for (final File file : listOfFiles) {
                 String fileName = file.getName();
-                //LOGGER.warning("fileName: " + fileName);
                 if (file.isFile() && fileName.endsWith(".yml")) {
                     try {
                         final BaseConfiguration configuration = new BaseConfiguration(file);
                         configuration.load();
                         usersData.put(UUID.fromString(fileName.substring(0, fileName.length() - 4)), configuration);
-                        //LOGGER.warning("fileName.substring: " + fileName.substring(0, fileName.length() - 4));
                     } catch (final Exception ex) {
                         LOGGER.log(Level.WARNING, "User file " + fileName + " loading error!");
                     }

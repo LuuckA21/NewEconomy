@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>Build-6</version>
+    <version>Build-7</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>
@@ -20,12 +20,12 @@
         <libs.vault>1.7</libs.vault>
         <libs.placeholderapi>2.11.1</libs.placeholderapi>
 
-        <libs.lombok>1.18.22</libs.lombok>
+        <libs.lombok>1.18.24</libs.lombok>
         <libs.configurate-yaml>4.1.2</libs.configurate-yaml>
 
         <libs.hikaricp>5.0.1</libs.hikaricp>
-        <libs.mysql>8.0.28</libs.mysql>
-        <libs.postgresql>42.3.3</libs.postgresql>
+        <libs.mysql>8.0.29</libs.mysql>
+        <libs.postgresql>42.3.6</libs.postgresql>
         <libs.sqlite>3.36.0.3</libs.sqlite>
         <libs.h2>2.1.212</libs.h2>
 

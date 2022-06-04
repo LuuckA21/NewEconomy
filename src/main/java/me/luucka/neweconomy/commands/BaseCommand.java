@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -34,7 +35,7 @@ public abstract class BaseCommand extends BukkitCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         try {
             execute(new CommandSource(sender), args);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public abstract class BaseCommand extends BukkitCommand {
     public abstract void execute(CommandSource sender, String[] args) throws Exception;
 
     @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) throws IllegalArgumentException {
         return onTabComplete(new CommandSource(sender), args);
     }
 

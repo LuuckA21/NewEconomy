@@ -28,7 +28,7 @@ public final class CommandSource {
 
     public IUser getUser(final NewEconomy plugin) {
         if (sender instanceof Player player) {
-            return plugin.getUserMap().getUser(player);
+            return plugin.getUser(player);
         }
         return null;
     }
