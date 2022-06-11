@@ -181,7 +181,6 @@ public final class BaseConfiguration {
         if (!configFile.exists()) {
             try {
                 if (templateName != null) {
-                    //Files.copy(getResource(templateName), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     Files.copy(resourceClass.getResourceAsStream(templateName), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } else {
                     this.configFile.createNewFile();

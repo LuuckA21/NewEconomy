@@ -53,8 +53,7 @@ public class UserMap implements IConfig {
 
     public void loadUser(final OfflinePlayer player) {
         if (!users.containsKey(player.getUniqueId())) {
-            User user = new User(PLUGIN, player);
-            users.put(player.getUniqueId(), user);
+            users.put(player.getUniqueId(), new User(PLUGIN, player));
         }
     }
 

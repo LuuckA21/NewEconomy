@@ -52,7 +52,7 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
             LOGGER.log(Level.INFO, "Find Vault...");
             LOGGER.log(Level.INFO, "Hook Vault for Economy management");
         } catch (final ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Vault not found... NewEconomy will not works with Vault");
+            LOGGER.log(Level.SEVERE, "Vault not found... NewEconomy will works without Vault");
         }
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
