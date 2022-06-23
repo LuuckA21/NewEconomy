@@ -16,7 +16,7 @@ public class EcoCommand extends BaseCommand {
     private final NewEconomy PLUGIN;
 
     public EcoCommand(final NewEconomy plugin) {
-        super("economy", "Economy admin command", "neweconomy.eco", "eco");
+        super("economy", "Economy admin command", "neweconomy.eco");
         this.PLUGIN = plugin;
         this.setUsage("/economy <add | take | set | reset> <player> [money]");
     }
