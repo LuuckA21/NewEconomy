@@ -5,7 +5,7 @@ import me.luucka.neweconomy.api.INewEconomy;
 import me.luucka.neweconomy.api.IUser;
 import me.luucka.neweconomy.api.UserNotExistsException;
 import me.luucka.neweconomy.commands.BalanceCommand;
-import me.luucka.neweconomy.commands.EcoCommand;
+import me.luucka.neweconomy.commands.EconomyCommand;
 import me.luucka.neweconomy.commands.ReloadCommand;
 import me.luucka.neweconomy.database.DBUserDataManager;
 import me.luucka.neweconomy.hooks.PlaceholderNewEconomy;
@@ -89,7 +89,7 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
         getServer().getPluginManager().registerEvents(new PlayerListeners(this), this);
 
         new BalanceCommand(this);
-        new EcoCommand(this);
+        new EconomyCommand(this);
         new ReloadCommand(this);
     }
 
