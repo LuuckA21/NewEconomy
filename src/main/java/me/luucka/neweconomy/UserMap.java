@@ -44,7 +44,7 @@ public class UserMap implements IConfig {
 
     public IUser getUser(final OfflinePlayer player) {
         IUser user = users.get(player.getUniqueId());
-        if (user == null) {
+        while (user == null) {
             loadUser(player);
             user = users.get(player.getUniqueId());
         }

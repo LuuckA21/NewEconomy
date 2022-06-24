@@ -1,5 +1,5 @@
 storage:
-  # [DB type]
+  # [Storage type]
   # => mysql        | [Remote] Save the data into Mysql database
   # => postgresql   | [Remote] Save the data into PostgreSQL database
   # => sqlite       | [File] Save the data into SQLite database
@@ -23,8 +23,5 @@ storage:
     # [H2 settings]
     h2: "neweconomy"
 
+# Start money (default 0)
 start-money: 0
-
-# Date format legend: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/SimpleDateFormat.html
-# Test format: https://javadevtools.com/simpledateformat
-date-format: "MMM-d-y HH:m:s"

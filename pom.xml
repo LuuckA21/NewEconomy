@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>Build-10</version>
+    <version>Build-11</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>

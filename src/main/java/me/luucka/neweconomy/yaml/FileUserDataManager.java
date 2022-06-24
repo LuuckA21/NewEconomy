@@ -40,8 +40,6 @@ public class FileUserDataManager implements IUserDataManager {
             configuration = new BaseConfiguration(file);
             configuration.load();
             configuration.setProperty("money", PLUGIN.getSettings().getStartMoney());
-            configuration.setProperty("account-creation", System.currentTimeMillis());
-            configuration.setProperty("last-transaction", -1L);
             configuration.setProperty("last-account-name", player.getName());
             configuration.save();
             usersData.put(player.getUniqueId(), configuration);

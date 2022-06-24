@@ -38,8 +38,6 @@ public class Settings implements IConfig {
     private String h2DbName;
     @Getter
     private int startMoney;
-    @Getter
-    private String dateFormat;
 
     public Settings(final NewEconomy plugin) {
         this.PLUGIN = plugin;
@@ -78,7 +76,6 @@ public class Settings implements IConfig {
             h2DbName = _getH2DbName();
         }
         startMoney = _getStartMoney();
-        dateFormat = _getDateFormat();
     }
 
     private String _getStorageType() {
@@ -130,10 +127,6 @@ public class Settings implements IConfig {
             money = 0;
         }
         return money;
-    }
-
-    private String _getDateFormat() {
-        return config.getString("date-format", "MMM-d-y HH:m:s");
     }
 
 }
