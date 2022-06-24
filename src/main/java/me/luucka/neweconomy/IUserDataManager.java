@@ -18,12 +18,6 @@ public interface IUserDataManager extends IConfig {
 
     void takeUserMoney(OfflinePlayer player, int money);
 
-    long getUserAccountCreation(OfflinePlayer player);
-
-    long getUserLastTransaction(OfflinePlayer player);
-
-    void setUserLastTransaction(OfflinePlayer player);
-
     String getUserLastAccountName(OfflinePlayer player);
 
     void setUserLastAccountName(OfflinePlayer player);

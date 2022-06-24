@@ -79,23 +79,6 @@ public class FileUserDataManager implements IUserDataManager {
     }
 
     @Override
-    public long getUserAccountCreation(OfflinePlayer player) {
-        return usersData.get(player.getUniqueId()).getLong("account-creation", 0L);
-    }
-
-    @Override
-    public long getUserLastTransaction(OfflinePlayer player) {
-        return usersData.get(player.getUniqueId()).getLong("last-transaction", -1L);
-    }
-
-    @Override
-    public void setUserLastTransaction(OfflinePlayer player) {
-        final BaseConfiguration configuration = usersData.get(player.getUniqueId());
-        configuration.setProperty("last-transaction", System.currentTimeMillis());
-        configuration.save();
-    }
-
-    @Override
     public String getUserLastAccountName(OfflinePlayer player) {
         return usersData.get(player.getUniqueId()).getString("last-account-name", "NULL");
     }

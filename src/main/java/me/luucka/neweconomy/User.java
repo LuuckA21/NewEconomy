@@ -12,8 +12,6 @@ public class User implements IUser {
     private final IUserDataManager userDataManager;
 
     private int money;
-    private final long accountCreation;
-    private long lastTransaction;
     private String lastAccountName;
 
     public User(final NewEconomy plugin, final OfflinePlayer player) {
@@ -26,8 +24,6 @@ public class User implements IUser {
         }
 
         this.money = userDataManager.getUserMoney(player);
-        this.accountCreation = userDataManager.getUserAccountCreation(player);
-        this.lastTransaction = userDataManager.getUserLastTransaction(player);
         setLastAccountName();
 
     }
@@ -47,14 +43,12 @@ public class User implements IUser {
     public void setMoney(int money) {
         this.money = money;
         userDataManager.setUserMoney(player, money);
-        setLastTransaction();
         _sendMessage(PLUGIN.getMessages().getSetYourAccount(money));
     }
 
     public void addMoney(int money) {
         this.money += money;
         userDataManager.addUserMoney(player, money);
-        setLastTransaction();
         _sendMessage(PLUGIN.getMessages().getAddYourAccount(money));
     }
 
@@ -62,21 +56,7 @@ public class User implements IUser {
         this.money -= money;
         if (this.money < 0) this.money = 0;
         userDataManager.takeUserMoney(player, money);
-        setLastTransaction();
         _sendMessage(PLUGIN.getMessages().getTakeYourAccount(money));
-    }
-
-    public long getAccountCreation() {
-        return accountCreation;
-    }
-
-    public long getLastTransaction() {
-        return lastTransaction;
-    }
-
-    public void setLastTransaction() {
-        this.lastTransaction = System.currentTimeMillis();
-        userDataManager.setUserLastTransaction(player);
     }
 
     public String getLastAccountName() {
