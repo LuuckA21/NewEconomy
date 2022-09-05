@@ -4,15 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.help.GenericCommandHelpTopic;
+import org.bukkit.help.HelpTopic;
+import org.bukkit.help.IndexHelpTopic;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static me.luucka.neweconomy.utils.Color.colorize;
 
 public abstract class BaseCommand extends BukkitCommand {
+
+    private static final Set<BaseCommand> registeredCommands = new HashSet<>();
 
     public BaseCommand(String name, String description) {
         this(name, description, null);
@@ -32,6 +36,22 @@ public abstract class BaseCommand extends BukkitCommand {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        registeredCommands.add(this);
+        Bukkit.getHelpMap().clear();
+        List<HelpTopic> topics = new ArrayList<>();
+        for (final BaseCommand bc : registeredCommands) {
+            topics.add(new GenericCommandHelpTopic(bc));
+        }
+        Bukkit.getHelpMap().addTopic(
+                new IndexHelpTopic(
+                        "NewEconomy",
+                        "NewEco",
+                        "neweconomy.help",
+                        topics,
+                        "NewEconomy Help page"
+                )
+        );
     }
 
     @Override

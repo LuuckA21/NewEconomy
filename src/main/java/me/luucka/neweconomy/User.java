@@ -7,23 +7,18 @@ import static me.luucka.neweconomy.utils.Color.colorize;
 
 public class User implements IUser {
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
     private final OfflinePlayer player;
     private final IUserDataManager userDataManager;
 
-    private int money;
-    private String lastAccountName;
-
     public User(final NewEconomy plugin, final OfflinePlayer player) {
-        this.PLUGIN = plugin;
+        this.plugin = plugin;
         this.player = player;
-        this.userDataManager = this.PLUGIN.getUserDataManager();
+        this.userDataManager = this.plugin.getUserDataManager();
 
         if (!exists()) {
             create();
         }
-
-        this.money = userDataManager.getUserMoney(player);
         setLastAccountName();
 
     }
@@ -37,34 +32,29 @@ public class User implements IUser {
     }
 
     public int getMoney() {
-        return money;
+        return userDataManager.getUserMoney(player);
     }
 
     public void setMoney(int money) {
-        this.money = money;
         userDataManager.setUserMoney(player, money);
-        _sendMessage(PLUGIN.getMessages().getSetYourAccount(money));
+        _sendMessage(plugin.getMessages().getSetYourAccount(money));
     }
 
     public void addMoney(int money) {
-        this.money += money;
         userDataManager.addUserMoney(player, money);
-        _sendMessage(PLUGIN.getMessages().getAddYourAccount(money));
+        _sendMessage(plugin.getMessages().getAddYourAccount(money));
     }
 
     public void takeMoney(int money) {
-        this.money -= money;
-        if (this.money < 0) this.money = 0;
         userDataManager.takeUserMoney(player, money);
-        _sendMessage(PLUGIN.getMessages().getTakeYourAccount(money));
+        _sendMessage(plugin.getMessages().getTakeYourAccount(money));
     }
 
     public String getLastAccountName() {
-        return lastAccountName;
+        return userDataManager.getUserLastAccountName(player);
     }
 
     public void setLastAccountName() {
-        this.lastAccountName = player.getName();
         userDataManager.setUserLastAccountName(player);
     }
 

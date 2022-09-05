@@ -16,13 +16,13 @@ public class FileUserDataManager implements IUserDataManager {
 
     private static final Logger LOGGER = Logger.getLogger("NewEconomy");
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
     private final File dataFolder;
     private final Map<UUID, BaseConfiguration> usersData = new HashMap<>();
 
     public FileUserDataManager(final NewEconomy plugin) {
-        this.PLUGIN = plugin;
-        this.dataFolder = new File(PLUGIN.getDataFolder(), "userdata");
+        this.plugin = plugin;
+        this.dataFolder = new File(this.plugin.getDataFolder(), "userdata");
         if (!this.dataFolder.exists()) {
             this.dataFolder.mkdirs();
         }
@@ -39,7 +39,7 @@ public class FileUserDataManager implements IUserDataManager {
             }
             configuration = new BaseConfiguration(file);
             configuration.load();
-            configuration.setProperty("money", PLUGIN.getSettings().getStartMoney());
+            configuration.setProperty("money", plugin.getSettings().getStartMoney());
             configuration.setProperty("last-account-name", player.getName());
             configuration.save();
             usersData.put(player.getUniqueId(), configuration);

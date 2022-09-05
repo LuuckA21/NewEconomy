@@ -14,4 +14,6 @@ public interface INewEconomy extends Plugin {
 
     void loadUser(final OfflinePlayer player);
 
+    void unloadUser(final OfflinePlayer player);
+
 }

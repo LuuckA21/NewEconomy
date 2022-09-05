@@ -1,5 +1,7 @@
 package me.luucka.neweconomy;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import lombok.Getter;
 import me.luucka.neweconomy.api.IUser;
 import me.luucka.neweconomy.api.UserNotExistsException;
@@ -16,8 +18,7 @@ public class UserMap implements IConfig {
     @Getter
     private final ConcurrentHashMap<String, UUID> nameUUID = new ConcurrentHashMap<>();
 
-    @Getter
-    private final ConcurrentHashMap<UUID, User> users = new ConcurrentHashMap<>();
+    private final Cache<UUID, User> users = CacheBuilder.newBuilder().maximumSize(1000).build();
 
     @Getter
     private final UUIDMap uuidMap;
@@ -43,17 +44,23 @@ public class UserMap implements IConfig {
     }
 
     public IUser getUser(final OfflinePlayer player) {
-        IUser user = users.get(player.getUniqueId());
+        IUser user = users.asMap().get(player.getUniqueId());
         while (user == null) {
             loadUser(player);
-            user = users.get(player.getUniqueId());
+            user = users.asMap().get(player.getUniqueId());
         }
         return user;
     }
 
     public void loadUser(final OfflinePlayer player) {
-        if (!users.containsKey(player.getUniqueId())) {
+        if (!users.asMap().containsKey(player.getUniqueId())) {
             users.put(player.getUniqueId(), new User(PLUGIN, player));
+        }
+    }
+
+    public void unloadUser(final OfflinePlayer player) {
+        if (users.asMap().containsKey(player.getUniqueId())) {
+            users.invalidate(player.getUniqueId());
         }
     }
 

@@ -12,12 +12,12 @@ import java.util.UUID;
 
 public class DBUserDataManager implements IUserDataManager {
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
     private final DBConnection dbConnection;
 
     public DBUserDataManager(final NewEconomy plugin) throws SQLException {
-        this.PLUGIN = plugin;
-        this.dbConnection = new DBConnection(this.PLUGIN);
+        this.plugin = plugin;
+        this.dbConnection = new DBConnection(this.plugin);
         _init();
     }
 
@@ -34,7 +34,7 @@ public class DBUserDataManager implements IUserDataManager {
 
     private void _init() throws SQLException {
         try (Connection conn = dbConnection.getDbSource().getConnection();
-             PreparedStatement ps = conn.prepareStatement(PLUGIN.getSettings().getStorageType().equals("h2") ? H2_INIT : SQL_BASE_INIT)
+             PreparedStatement ps = conn.prepareStatement(plugin.getSettings().getStorageType().equals("h2") ? H2_INIT : SQL_BASE_INIT)
         ) {
             ps.executeUpdate();
         }
@@ -56,7 +56,7 @@ public class DBUserDataManager implements IUserDataManager {
         try (Connection conn = dbConnection.getDbSource().getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO neweconomy_balance (uuid, money, last_account_name) VALUES(?,?,?)")) {
             ps.setString(1, player.getUniqueId().toString());
-            ps.setInt(2, PLUGIN.getSettings().getStartMoney());
+            ps.setInt(2, plugin.getSettings().getStartMoney());
             ps.setString(3, player.getName());
             ps.executeUpdate();
         } catch (final SQLException ex) {

@@ -39,6 +39,9 @@ public class Settings implements IConfig {
     @Getter
     private int startMoney;
 
+    @Getter
+    private boolean useVault;
+
     public Settings(final NewEconomy plugin) {
         this.PLUGIN = plugin;
         this.config = new BaseConfiguration(new File(PLUGIN.getDataFolder(), "config.yml"), "/config.yml");
@@ -63,19 +66,20 @@ public class Settings implements IConfig {
         config.load();
         storageType = _getStorageType();
         if (REMOTE_DB_STORAGE_TYPES.contains(storageType)) {
-            dbHost = _getDbHost();
-            dbPort = _getDbPort();
-            dbName = _getDbName();
-            dbUsername = _getDbUsername();
-            dbPassword = _getDbPassword();
+            dbHost = config.getString("storage.settings.remote-db.host", "localhost");
+            dbPort = config.getString("storage.settings.remote-db.port", "3306");
+            dbName = config.getString("storage.settings.remote-db.database", "neweconomy");
+            dbUsername = config.getString("storage.settings.remote-db.username", "root");
+            dbPassword = config.getString("storage.settings.remote-db.password", "");
         }
         if (storageType.equals("sqlite")) {
-            sqliteDbName = _getSqliteDbName();
+            sqliteDbName = config.getString("storage.settings.sqlite", "neweconomy.db");
         }
         if (storageType.equals("h2")) {
-            h2DbName = _getH2DbName();
+            h2DbName = config.getString("storage.settings.h2", "neweconomy");
         }
         startMoney = _getStartMoney();
+        useVault = config.getBoolean("use-vault", true);
     }
 
     private String _getStorageType() {
@@ -85,36 +89,6 @@ public class Settings implements IConfig {
             return "yaml";
         }
         return storageType;
-    }
-
-    private String _getDbHost() {
-        return config.getString("storage.settings.remote-db.host", "localhost");
-    }
-
-    private String _getDbPort() {
-        return config.getString("storage.settings.remote-db.port", "3306");
-    }
-
-    private String _getDbName() {
-        return config.getString("storage.settings.remote-db.database", "neweconomy");
-    }
-
-    private String _getDbUsername() {
-        return config.getString("storage.settings.remote-db.username", "root");
-    }
-
-    private String _getDbPassword() {
-        return config.getString("storage.settings.remote-db.password", "");
-    }
-
-    private String _getSqliteDbName() {
-        String sqliteDbName = config.getString("storage.settings.sqlite", "neweconomy.db");
-        if (!sqliteDbName.endsWith(".db")) sqliteDbName += ".db";
-        return sqliteDbName;
-    }
-
-    private String _getH2DbName() {
-        return config.getString("storage.settings.h2", "neweconomy");
     }
 
     private int _getStartMoney() {

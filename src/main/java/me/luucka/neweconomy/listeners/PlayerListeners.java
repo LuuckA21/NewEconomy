@@ -4,6 +4,7 @@ import me.luucka.neweconomy.NewEconomy;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListeners implements Listener {
 
@@ -17,5 +18,10 @@ public class PlayerListeners implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         PLUGIN.addNameUUID(event.getPlayer());
         PLUGIN.loadUser(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(final PlayerQuitEvent event) {
+        PLUGIN.unloadUser(event.getPlayer());
     }
 }

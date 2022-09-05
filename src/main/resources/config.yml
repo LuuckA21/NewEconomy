@@ -25,3 +25,6 @@ storage:
 
 # Start money (default 0)
 start-money: 0
+
+# Use Vault for Economy
+use-vault: true

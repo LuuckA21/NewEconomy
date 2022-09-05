@@ -46,27 +46,36 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
     public void onEnable() {
         if (LOGGER != this.getLogger()) LOGGER.setParent(this.getLogger());
 
-        try {
-            Class.forName("net.milkbowl.vault.economy.Economy");
-            getServer().getServicesManager().register(Economy.class, new VaultNewEconomy(this), this, ServicePriority.Normal);
-            LOGGER.log(Level.INFO, "Find Vault...");
-            LOGGER.log(Level.INFO, "Hook Vault for Economy management");
-        } catch (final ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Vault not found... NewEconomy will works without Vault");
+        // Load Config.yml
+        settings = new Settings(this);
+        configList.add(settings);
+
+        // Load Messages.yml
+        messages = new Messages(this);
+        configList.add(messages);
+
+        // Check Vault and if present register VaultNewEconomy Service
+        if (settings.isUseVault()) {
+            try {
+                Class.forName("net.milkbowl.vault.economy.Economy");
+                getServer().getServicesManager().register(Economy.class, new VaultNewEconomy(this), this, ServicePriority.Normal);
+                LOGGER.log(Level.INFO, "Find Vault...");
+                LOGGER.log(Level.INFO, "Hook Vault for Economy management");
+            } catch (final ClassNotFoundException e) {
+                LOGGER.log(Level.SEVERE, "Vault not found... NewEconomy will works without Vault");
+            }
+        } else {
+            LOGGER.log(Level.INFO, "Vault is disable... NewEconomy will works without Vault");
         }
 
+        // Check PlaceholderAPI and if present load NewEconomy Placeholders
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PlaceholderNewEconomy(this).register();
             LOGGER.log(Level.INFO, "Find PlaceholderAPI...");
             LOGGER.log(Level.INFO, "Hook PlaceholderAPI for Placeholders management");
         }
 
-        settings = new Settings(this);
-        configList.add(settings);
-
-        messages = new Messages(this);
-        configList.add(messages);
-
+        // Load UserDataManager (YAML or DB)
         if (Settings.REMOTE_DB_STORAGE_TYPES.contains(settings.getStorageType()) || Settings.FILE_DB_STORAGE_TYPES.contains(settings.getStorageType())) {
             try {
                 userDataManager = new DBUserDataManager(this);
@@ -122,6 +131,11 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
     @Override
     public void loadUser(OfflinePlayer player) {
         userMap.loadUser(player);
+    }
+
+    @Override
+    public void unloadUser(OfflinePlayer player) {
+        userMap.unloadUser(player);
     }
 
 }

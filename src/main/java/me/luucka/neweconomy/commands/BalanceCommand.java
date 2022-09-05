@@ -11,25 +11,25 @@ import java.util.List;
 
 public class BalanceCommand extends BaseCommand {
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
 
     public BalanceCommand(final NewEconomy plugin) {
-        super("balance", "Show your balance", "neweconomy.bal", "bal", "money");
-        this.PLUGIN = plugin;
+        super("balance", "Show your balance", "neweconomy.bal", "bal");
+        this.plugin = plugin;
     }
 
     @Override
     public void execute(CommandSource sender, String[] args) throws Exception {
         if (args.length == 0 && sender.isPlayer()) {
-            sender.sendMessage(PLUGIN.getMessages().getBalance(sender.getUser(PLUGIN).getMoney()));
+            sender.sendMessage(plugin.getMessages().getBalance(sender.getUser(plugin).getMoney()));
         } else if (args.length >= 1 && sender.hasPermission("neweconomy.bal.others")) {
-            final IUser user = PLUGIN.getUser(args[0]);
-            sender.sendMessage(PLUGIN.getMessages().getBalanceOther(user.getLastAccountName(), user.getMoney()));
+            final IUser user = plugin.getUser(args[0]);
+            sender.sendMessage(plugin.getMessages().getBalanceOther(user.getLastAccountName(), user.getMoney()));
         } else {
             if (sender.isPlayer()) {
-                throw new InsufficientPermissionException(PLUGIN.getMessages().getNoPermission());
+                throw new InsufficientPermissionException(plugin.getMessages().getNoPermission());
             } else {
-                sender.sendMessage(PLUGIN.getMessages().getNoConsole());
+                sender.sendMessage(plugin.getMessages().getNoConsole());
             }
         }
     }
@@ -38,7 +38,7 @@ public class BalanceCommand extends BaseCommand {
     public List<String> onTabComplete(CommandSource sender, String[] args) {
         if (args.length == 1 && sender.hasPermission("neweconomy.bal.others")) {
             final List<String> players = new ArrayList<>();
-            for (final Player p : PLUGIN.getServer().getOnlinePlayers()) {
+            for (final Player p : plugin.getServer().getOnlinePlayers()) {
                 players.add(p.getName());
             }
             return players;

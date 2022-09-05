@@ -9,10 +9,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderNewEconomy extends PlaceholderExpansion {
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
 
     public PlaceholderNewEconomy(final NewEconomy plugin) {
-        this.PLUGIN = plugin;
+        this.plugin = plugin;
     }
 
     @Override
@@ -22,18 +22,18 @@ public class PlaceholderNewEconomy extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return PLUGIN.getDescription().getAuthors().toString();
+        return plugin.getDescription().getAuthors().toString();
     }
 
     @Override
     public @NotNull String getVersion() {
-        return PLUGIN.getDescription().getVersion();
+        return plugin.getDescription().getVersion();
     }
 
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         params = params.toLowerCase();
-        IUser user = PLUGIN.getUser(player);
+        IUser user = plugin.getUser(player);
 
         return switch (params) {
             case "balance" -> Integer.toString(user.getMoney());

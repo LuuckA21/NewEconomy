@@ -13,19 +13,19 @@ import java.util.List;
 
 public class EconomyCommand extends BaseCommand {
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
 
     public EconomyCommand(final NewEconomy plugin) {
         super("economy", "Economy admin command", "neweconomy.eco");
-        this.PLUGIN = plugin;
+        this.plugin = plugin;
         this.setUsage("/economy <add | take | set | reset> <player> [money]");
     }
 
     @Override
     public void execute(CommandSource sender, String[] args) throws Exception {
-        if (!testPermissionSilent(sender.getSender())) throw new InsufficientPermissionException(PLUGIN.getMessages().getNoPermission());
+        if (!testPermissionSilent(sender.getSender())) throw new InsufficientPermissionException(plugin.getMessages().getNoPermission());
 
-        if (args.length < 2) throw new NotEnoughArgumentsException(PLUGIN.getMessages().getCommandUsage(getUsage()));
+        if (args.length < 2) throw new NotEnoughArgumentsException(plugin.getMessages().getCommandUsage(getUsage()));
 
         final CommandType cmd;
         final IUser user;
@@ -34,15 +34,15 @@ public class EconomyCommand extends BaseCommand {
         try {
             cmd = CommandType.valueOf(args[0].toUpperCase());
         } catch (final IllegalArgumentException ex) {
-            throw new Exception(PLUGIN.getMessages().getCommandUsage(getUsage()));
+            throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
         }
 
-        if (cmd != CommandType.RESET && args.length < 3) throw new NotEnoughArgumentsException(PLUGIN.getMessages().getCommandUsage(getUsage()));
+        if (cmd != CommandType.RESET && args.length < 3) throw new NotEnoughArgumentsException(plugin.getMessages().getCommandUsage(getUsage()));
 
-        user = PLUGIN.getUser(args[1]);
+        user = plugin.getUser(args[1]);
 
         try {
-            money = cmd == CommandType.RESET ? PLUGIN.getSettings().getStartMoney() : Integer.parseInt(args[2]);
+            money = cmd == CommandType.RESET ? plugin.getSettings().getStartMoney() : Integer.parseInt(args[2]);
             if (money < 0) throw new NumberFormatException();
         } catch (final NumberFormatException ex) {
             throw new Exception("<red>Please insert a positive integer");
@@ -51,15 +51,15 @@ public class EconomyCommand extends BaseCommand {
         switch (cmd) {
             case ADD -> {
                 user.addMoney(money);
-                sender.sendMessage(PLUGIN.getMessages().getAddOtherAccount(user.getLastAccountName(), money));
+                sender.sendMessage(plugin.getMessages().getAddOtherAccount(user.getLastAccountName(), money));
             }
             case TAKE -> {
                 user.takeMoney(money);
-                sender.sendMessage(PLUGIN.getMessages().getTakeOtherAccount(user.getLastAccountName(), money));
+                sender.sendMessage(plugin.getMessages().getTakeOtherAccount(user.getLastAccountName(), money));
             }
             case SET, RESET -> {
                 user.setMoney(money);
-                sender.sendMessage(PLUGIN.getMessages().getSetOtherAccount(user.getLastAccountName(), money));
+                sender.sendMessage(plugin.getMessages().getSetOtherAccount(user.getLastAccountName(), money));
             }
         }
     }
@@ -76,7 +76,7 @@ public class EconomyCommand extends BaseCommand {
             return options;
         } else if (args.length == 2) {
             final List<String> players = new ArrayList<>();
-            for (final Player p : PLUGIN.getServer().getOnlinePlayers()) {
+            for (final Player p : plugin.getServer().getOnlinePlayers()) {
                 players.add(p.getName());
             }
             return players;

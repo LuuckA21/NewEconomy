@@ -13,13 +13,13 @@ public class DBConnection {
 
     private static final Map<String, String> CLASS_DRIVER = new HashMap<>();
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
 
     @Getter
     private HikariDataSource dbSource;
 
     public DBConnection(NewEconomy plugin) {
-        this.PLUGIN = plugin;
+        this.plugin = plugin;
         _loadClassDriverMap();
         _loadDbSource();
     }
@@ -32,14 +32,14 @@ public class DBConnection {
     }
 
     private void _loadDbSource() {
-        final String storageType = PLUGIN.getSettings().getStorageType();
+        final String storageType = plugin.getSettings().getStorageType();
         final HikariConfig config = new HikariConfig();
         config.setPoolName("NewEconomy");
         config.setDriverClassName(CLASS_DRIVER.get(storageType));
-        config.setJdbcUrl(PLUGIN.getSettings().getDBStringConnection());
+        config.setJdbcUrl(plugin.getSettings().getDBStringConnection());
         if (Settings.REMOTE_DB_STORAGE_TYPES.contains(storageType)) {
-            config.setUsername(PLUGIN.getSettings().getDbUsername());
-            config.setPassword(PLUGIN.getSettings().getDbPassword());
+            config.setUsername(plugin.getSettings().getDbUsername());
+            config.setPassword(plugin.getSettings().getDbPassword());
         }
         dbSource = new HikariDataSource(config);
     }
