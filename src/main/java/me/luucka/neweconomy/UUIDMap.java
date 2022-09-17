@@ -19,19 +19,19 @@ public class UUIDMap {
     private static final ScheduledExecutorService writeScheduler = Executors.newScheduledThreadPool(1);
     private static boolean pendingWrite;
     private static boolean loading = false;
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
     private final File csvFile;
     private final Pattern splitPattern = Pattern.compile(",");
     private final Runnable writeTaskRunnable;
 
     public UUIDMap(final NewEconomy plugin) {
-        this.PLUGIN = plugin;
-        this.csvFile = new File(PLUGIN.getDataFolder(), "usermap.csv");
+        this.plugin = plugin;
+        this.csvFile = new File(this.plugin.getDataFolder(), "usermap.csv");
         pendingWrite = false;
         this.writeTaskRunnable = () -> {
             if (pendingWrite) {
                 try {
-                    new WriteRunner(PLUGIN.getDataFolder(), csvFile, PLUGIN.getUserMap().getNameUUID()).run();
+                    new WriteRunner(this.plugin.getDataFolder(), csvFile, this.plugin.getUserMap().getNameUUID()).run();
                 } catch (final Throwable t) {
                     t.printStackTrace();
                 }

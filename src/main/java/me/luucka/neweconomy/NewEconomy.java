@@ -7,11 +7,11 @@ import me.luucka.neweconomy.api.UserNotExistsException;
 import me.luucka.neweconomy.commands.BalanceCommand;
 import me.luucka.neweconomy.commands.EconomyCommand;
 import me.luucka.neweconomy.commands.ReloadCommand;
-import me.luucka.neweconomy.database.DBUserDataManager;
+import me.luucka.neweconomy.config.IConfig;
+import me.luucka.neweconomy.managers.UserDataManager;
 import me.luucka.neweconomy.hooks.PlaceholderNewEconomy;
 import me.luucka.neweconomy.hooks.VaultNewEconomy;
 import me.luucka.neweconomy.listeners.PlayerListeners;
-import me.luucka.neweconomy.yaml.FileUserDataManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
     private Messages messages;
 
     @Getter
-    private IUserDataManager userDataManager;
+    private UserDataManager userDataManager;
 
     @Getter
     private UserMap userMap;
@@ -75,20 +76,7 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
             LOGGER.log(Level.INFO, "Hook PlaceholderAPI for Placeholders management");
         }
 
-        // Load UserDataManager (YAML or DB)
-        if (Settings.REMOTE_DB_STORAGE_TYPES.contains(settings.getStorageType()) || Settings.FILE_DB_STORAGE_TYPES.contains(settings.getStorageType())) {
-            try {
-                userDataManager = new DBUserDataManager(this);
-                LOGGER.log(Level.INFO, String.format("Database connected successfully! (%s)", settings.getStorageType().toUpperCase()));
-            } catch (SQLException e) {
-                e.printStackTrace();
-                LOGGER.log(Level.SEVERE, "Database connection error! Try to restart your server");
-                Bukkit.getPluginManager().disablePlugin(this);
-            }
-        } else {
-            userDataManager = new FileUserDataManager(this);
-            LOGGER.log(Level.INFO, "User data managed by YAML Manager");
-        }
+        userDataManager = new UserDataManager(this);
         configList.add(userDataManager);
 
         userMap = new UserMap(this);
@@ -113,28 +101,38 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
         }
     }
 
+    public Connection getConnection() {
+        try {
+            return this.getSettings().getDbSource().getConnection();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Database connection error! Try to restart your server");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        return null;
+    }
+
     @Override
-    public void addNameUUID(Player player) {
+    public void addNameUUID(final Player player) {
         userMap.addNameUUID(player);
     }
 
     @Override
-    public IUser getUser(String name) throws UserNotExistsException {
+    public IUser getUser(final String name) throws UserNotExistsException {
         return userMap.getUser(name);
     }
 
     @Override
-    public IUser getUser(OfflinePlayer player) {
+    public IUser getUser(final OfflinePlayer player) {
         return userMap.getUser(player);
     }
 
     @Override
-    public void loadUser(OfflinePlayer player) {
+    public void loadUser(final OfflinePlayer player) {
         userMap.loadUser(player);
     }
 
     @Override
-    public void unloadUser(OfflinePlayer player) {
+    public void unloadUser(final OfflinePlayer player) {
         userMap.unloadUser(player);
     }
 

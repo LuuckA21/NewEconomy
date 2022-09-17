@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import lombok.Getter;
 import me.luucka.neweconomy.api.IUser;
 import me.luucka.neweconomy.api.UserNotExistsException;
+import me.luucka.neweconomy.config.IConfig;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -13,23 +14,23 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UserMap implements IConfig {
 
-    private final NewEconomy PLUGIN;
-
-    @Getter
-    private final ConcurrentHashMap<String, UUID> nameUUID = new ConcurrentHashMap<>();
-
-    private final Cache<UUID, User> users = CacheBuilder.newBuilder().maximumSize(1000).build();
+    private final NewEconomy plugin;
 
     @Getter
     private final UUIDMap uuidMap;
 
+    @Getter
+    private final ConcurrentHashMap<String, UUID> nameUUID = new ConcurrentHashMap<>();
+
+    private final Cache<UUID, User> userCache = CacheBuilder.newBuilder().maximumSize(500).build();
+
     public UserMap(final NewEconomy plugin) {
-        this.PLUGIN = plugin;
-        this.uuidMap = new UUIDMap(PLUGIN);
+        this.plugin = plugin;
+        this.uuidMap = new UUIDMap(this.plugin);
     }
 
     public void loadNameUUID() {
-        PLUGIN.getServer().getScheduler().runTaskAsynchronously(PLUGIN, () -> uuidMap.loadNameUUID(nameUUID));
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> uuidMap.loadNameUUID(nameUUID));
     }
 
     public void addNameUUID(final Player player) {
@@ -38,34 +39,33 @@ public class UserMap implements IConfig {
     }
 
     public IUser getUser(final String name) throws UserNotExistsException {
-        UUID uuid = nameUUID.get(name.toLowerCase());
-        if (uuid == null) throw new UserNotExistsException(PLUGIN.getMessages().getUserNotExists(name));
-        return getUser(PLUGIN.getServer().getOfflinePlayer(uuid));
+        final UUID uuid = nameUUID.get(name.toLowerCase());
+        if (uuid == null) {
+            throw new UserNotExistsException(plugin.getMessages().getUserNotExists(name));
+        }
+        return getUser(plugin.getServer().getOfflinePlayer(uuid));
     }
 
     public IUser getUser(final OfflinePlayer player) {
-        IUser user = users.asMap().get(player.getUniqueId());
+        IUser user = userCache.getIfPresent(player.getUniqueId());
         while (user == null) {
             loadUser(player);
-            user = users.asMap().get(player.getUniqueId());
+            user = userCache.getIfPresent(player.getUniqueId());
         }
         return user;
     }
 
     public void loadUser(final OfflinePlayer player) {
-        if (!users.asMap().containsKey(player.getUniqueId())) {
-            users.put(player.getUniqueId(), new User(PLUGIN, player));
-        }
+        userCache.put(player.getUniqueId(), new User(plugin, player));
     }
 
     public void unloadUser(final OfflinePlayer player) {
-        if (users.asMap().containsKey(player.getUniqueId())) {
-            users.invalidate(player.getUniqueId());
-        }
+        userCache.invalidate(player.getUniqueId());
     }
 
     @Override
     public void reloadConfig() {
+        userCache.invalidateAll();
         uuidMap.forceWriteUUIDMap();
         loadNameUUID();
     }

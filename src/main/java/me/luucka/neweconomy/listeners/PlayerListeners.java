@@ -8,20 +8,20 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListeners implements Listener {
 
-    private final NewEconomy PLUGIN;
+    private final NewEconomy plugin;
 
     public PlayerListeners(NewEconomy plugin) {
-        this.PLUGIN = plugin;
+        this.plugin = plugin;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PLUGIN.addNameUUID(event.getPlayer());
-        PLUGIN.loadUser(event.getPlayer());
+        plugin.addNameUUID(event.getPlayer());
+        plugin.loadUser(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        PLUGIN.unloadUser(event.getPlayer());
+        plugin.unloadUser(event.getPlayer());
     }
 }

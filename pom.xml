@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>Build-13</version>
+    <version>Build-14</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>
@@ -24,8 +24,9 @@
 
         <libs.hikaricp>5.0.1</libs.hikaricp>
         <libs.mysql>8.0.30</libs.mysql>
+        <libs.mariadb>3.0.7</libs.mariadb>
         <libs.postgresql>42.5.0</libs.postgresql>
-        <libs.sqlite>3.39.2.1</libs.sqlite>
+        <libs.sqlite>3.39.3.0</libs.sqlite>
         <libs.h2>2.1.214</libs.h2>
 
     </properties>
@@ -127,6 +128,7 @@
             <version>${libs.configurate-yaml}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
@@ -137,6 +139,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${libs.mysql}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>${libs.mariadb}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

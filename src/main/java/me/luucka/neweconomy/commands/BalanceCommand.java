@@ -2,7 +2,6 @@ package me.luucka.neweconomy.commands;
 
 import me.luucka.neweconomy.NewEconomy;
 import me.luucka.neweconomy.api.IUser;
-import me.luucka.neweconomy.exceptions.InsufficientPermissionException;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class BalanceCommand extends BaseCommand {
             sender.sendMessage(plugin.getMessages().getBalanceOther(user.getLastAccountName(), user.getMoney()));
         } else {
             if (sender.isPlayer()) {
-                throw new InsufficientPermissionException(plugin.getMessages().getNoPermission());
+                throw new Exception(plugin.getMessages().getNoPermission());
             } else {
                 sender.sendMessage(plugin.getMessages().getNoConsole());
             }

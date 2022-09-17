@@ -3,8 +3,6 @@ package me.luucka.neweconomy.commands;
 import com.google.common.collect.Lists;
 import me.luucka.neweconomy.NewEconomy;
 import me.luucka.neweconomy.api.IUser;
-import me.luucka.neweconomy.exceptions.InsufficientPermissionException;
-import me.luucka.neweconomy.exceptions.NotEnoughArgumentsException;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -23,9 +21,9 @@ public class EconomyCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSource sender, String[] args) throws Exception {
-        if (!testPermissionSilent(sender.getSender())) throw new InsufficientPermissionException(plugin.getMessages().getNoPermission());
+        if (!testPermissionSilent(sender.getSender())) throw new Exception(plugin.getMessages().getNoPermission());
 
-        if (args.length < 2) throw new NotEnoughArgumentsException(plugin.getMessages().getCommandUsage(getUsage()));
+        if (args.length < 2) throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
 
         final CommandType cmd;
         final IUser user;
@@ -37,7 +35,7 @@ public class EconomyCommand extends BaseCommand {
             throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
         }
 
-        if (cmd != CommandType.RESET && args.length < 3) throw new NotEnoughArgumentsException(plugin.getMessages().getCommandUsage(getUsage()));
+        if (cmd != CommandType.RESET && args.length < 3) throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
 
         user = plugin.getUser(args[1]);
 

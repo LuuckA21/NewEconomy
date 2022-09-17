@@ -4,8 +4,6 @@ public interface IUser {
 
     void create();
 
-    boolean exists();
-
     int getMoney();
 
     void setMoney(int money);

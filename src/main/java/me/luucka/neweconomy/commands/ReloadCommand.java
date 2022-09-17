@@ -1,7 +1,6 @@
 package me.luucka.neweconomy.commands;
 
 import me.luucka.neweconomy.NewEconomy;
-import me.luucka.neweconomy.exceptions.InsufficientPermissionException;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +16,7 @@ public class ReloadCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSource sender, String[] args) throws Exception {
-        if (!testPermissionSilent(sender.getSender())) throw new InsufficientPermissionException(plugin.getMessages().getNoPermission());
+        if (!testPermissionSilent(sender.getSender())) throw new Exception(plugin.getMessages().getNoPermission());
         plugin.reload();
         sender.sendMessage(plugin.getMessages().getReload());
     }

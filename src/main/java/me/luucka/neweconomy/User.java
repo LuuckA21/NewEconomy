@@ -1,6 +1,7 @@
 package me.luucka.neweconomy;
 
 import me.luucka.neweconomy.api.IUser;
+import me.luucka.neweconomy.managers.UserDataManager;
 import org.bukkit.OfflinePlayer;
 
 import static me.luucka.neweconomy.utils.Color.colorize;
@@ -8,54 +9,63 @@ import static me.luucka.neweconomy.utils.Color.colorize;
 public class User implements IUser {
 
     private final NewEconomy plugin;
+
+    private final UserDataManager userDataManager;
+
     private final OfflinePlayer player;
-    private final IUserDataManager userDataManager;
+
+    private int money;
 
     public User(final NewEconomy plugin, final OfflinePlayer player) {
         this.plugin = plugin;
         this.player = player;
         this.userDataManager = this.plugin.getUserDataManager();
 
-        if (!exists()) {
-            create();
-        }
-        setLastAccountName();
+        create();
+        this.money = this.userDataManager.getMoney(this.player);
+        this.setLastAccountName();
 
     }
 
+    @Override
     public void create() {
-        userDataManager.createUser(player);
+        userDataManager.create(player);
     }
 
-    public boolean exists() {
-        return userDataManager.userExists(player.getUniqueId());
-    }
-
+    @Override
     public int getMoney() {
-        return userDataManager.getUserMoney(player);
+        return money;
     }
 
+    @Override
     public void setMoney(int money) {
-        userDataManager.setUserMoney(player, money);
+        this.money = money;
+        this.userDataManager.setMoney(player, money);
         _sendMessage(plugin.getMessages().getSetYourAccount(money));
     }
 
+    @Override
     public void addMoney(int money) {
-        userDataManager.addUserMoney(player, money);
+        this.money += money;
+        userDataManager.addMoney(player, money);
         _sendMessage(plugin.getMessages().getAddYourAccount(money));
     }
 
+    @Override
     public void takeMoney(int money) {
-        userDataManager.takeUserMoney(player, money);
+        this.money = Math.max(this.money - money, 0);
+        userDataManager.takeMoney(player, money);
         _sendMessage(plugin.getMessages().getTakeYourAccount(money));
     }
 
+    @Override
     public String getLastAccountName() {
-        return userDataManager.getUserLastAccountName(player);
+        return this.player.getName();
     }
 
+    @Override
     public void setLastAccountName() {
-        userDataManager.setUserLastAccountName(player);
+        userDataManager.setLastAccountName(player);
     }
 
     private void _sendMessage(final String message) {
