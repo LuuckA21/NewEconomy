@@ -34,20 +34,8 @@ public class Settings implements IConfig {
         close();
         config.load();
         createConnection();
-        startMoney = _getStartMoney();
+        startMoney = config.getInt("start-money", 0);
         useVault = config.getBoolean("use-vault", true);
-    }
-
-    private int _getStartMoney() {
-        final String sMoney = config.getString("start-money", "0");
-        int money;
-        try {
-            money = Integer.parseInt(sMoney);
-            if (money < 0) money = 0;
-        } catch (final NumberFormatException e) {
-            money = 0;
-        }
-        return money;
     }
 
     private void createConnection() {

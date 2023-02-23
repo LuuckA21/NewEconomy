@@ -31,7 +31,7 @@ public class UUIDMap {
         this.writeTaskRunnable = () -> {
             if (pendingWrite) {
                 try {
-                    new WriteRunner(this.plugin.getDataFolder(), csvFile, this.plugin.getUserMap().getNameUUID()).run();
+                    new WriteRunner(this.plugin.getDataFolder(), csvFile, this.plugin.getUserManager().getPlayernameUuidMap()).run();
                 } catch (final Throwable t) {
                     t.printStackTrace();
                 }
@@ -40,7 +40,7 @@ public class UUIDMap {
         writeScheduler.scheduleWithFixedDelay(writeTaskRunnable, 5, 5, TimeUnit.SECONDS);
     }
 
-    public void loadNameUUID(final Map<String, UUID> nameUUID) {
+    public void loadPlayernameUuidMap(final Map<String, UUID> playernameUuidMap) {
         try {
             if (!csvFile.exists()) {
                 csvFile.createNewFile();
@@ -48,7 +48,7 @@ public class UUIDMap {
 
             if (loading) return;
 
-            nameUUID.clear();
+            playernameUuidMap.clear();
             loading = true;
 
             try (final BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
@@ -61,7 +61,7 @@ public class UUIDMap {
                         if (values.length == 2) {
                             final String name = values[0];
                             final UUID uuid = UUID.fromString(values[1]);
-                            nameUUID.put(name, uuid);
+                            playernameUuidMap.put(name, uuid);
                         }
                     }
                 }

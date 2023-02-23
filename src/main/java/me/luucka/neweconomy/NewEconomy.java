@@ -8,10 +8,10 @@ import me.luucka.neweconomy.commands.BalanceCommand;
 import me.luucka.neweconomy.commands.EconomyCommand;
 import me.luucka.neweconomy.commands.ReloadCommand;
 import me.luucka.neweconomy.config.IConfig;
-import me.luucka.neweconomy.managers.UserDataManager;
 import me.luucka.neweconomy.hooks.PlaceholderNewEconomy;
 import me.luucka.neweconomy.hooks.VaultNewEconomy;
 import me.luucka.neweconomy.listeners.PlayerListeners;
+import me.luucka.neweconomy.managers.UserDataManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -41,7 +41,7 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
     private UserDataManager userDataManager;
 
     @Getter
-    private UserMap userMap;
+    private UserManager userManager;
 
     @Override
     public void onEnable() {
@@ -79,9 +79,9 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
         userDataManager = new UserDataManager(this);
         configList.add(userDataManager);
 
-        userMap = new UserMap(this);
-        userMap.reloadConfig();
-        configList.add(userMap);
+        userManager = new UserManager(this);
+        userManager.reloadConfig();
+        configList.add(userManager);
 
         getServer().getPluginManager().registerEvents(new PlayerListeners(this), this);
 
@@ -92,7 +92,7 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
 
     @Override
     public void onDisable() {
-        userMap.getUuidMap().shutdown();
+        userManager.getUuidMap().shutdown();
     }
 
     public void reload() {
@@ -112,28 +112,28 @@ public final class NewEconomy extends JavaPlugin implements INewEconomy {
     }
 
     @Override
-    public void addNameUUID(final Player player) {
-        userMap.addNameUUID(player);
+    public void addPlayernameUuidToMap(final Player player) {
+        userManager.addPlayernameUuidToMap(player);
     }
 
     @Override
     public IUser getUser(final String name) throws UserNotExistsException {
-        return userMap.getUser(name);
+        return userManager.getUser(name);
     }
 
     @Override
     public IUser getUser(final OfflinePlayer player) {
-        return userMap.getUser(player);
+        return userManager.getUser(player);
     }
 
     @Override
     public void loadUser(final OfflinePlayer player) {
-        userMap.loadUser(player);
+        userManager.loadUser(player);
     }
 
     @Override
     public void unloadUser(final OfflinePlayer player) {
-        userMap.unloadUser(player);
+        userManager.unloadUser(player);
     }
 
 }

@@ -20,7 +20,6 @@ public class User implements IUser {
         this.plugin = plugin;
         this.player = player;
         this.userDataManager = this.plugin.getUserDataManager();
-
         create();
         this.money = this.userDataManager.getMoney(this.player);
         this.setLastAccountName();

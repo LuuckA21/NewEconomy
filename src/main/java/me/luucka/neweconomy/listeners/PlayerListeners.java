@@ -10,13 +10,13 @@ public class PlayerListeners implements Listener {
 
     private final NewEconomy plugin;
 
-    public PlayerListeners(NewEconomy plugin) {
+    public PlayerListeners(final NewEconomy plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        plugin.addNameUUID(event.getPlayer());
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        plugin.addPlayernameUuidToMap(event.getPlayer());
         plugin.loadUser(event.getPlayer());
     }
 

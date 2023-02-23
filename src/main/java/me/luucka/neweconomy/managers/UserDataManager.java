@@ -93,7 +93,7 @@ public class UserDataManager implements IConfig {
     public void reloadConfig() {
         try {
             _init();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Database connection error! Try to restart your server");
             Bukkit.getPluginManager().disablePlugin(plugin);
         }

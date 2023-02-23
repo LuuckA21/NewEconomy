@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
 
 public interface INewEconomy extends Plugin {
 
-    void addNameUUID(final Player player);
+    void addPlayernameUuidToMap(final Player player);
 
     IUser getUser(final String name) throws UserNotExistsException;
 

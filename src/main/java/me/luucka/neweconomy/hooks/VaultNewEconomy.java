@@ -87,7 +87,7 @@ public class VaultNewEconomy implements Economy {
     @Override
     public double getBalance(String playerName) {
         try {
-            IUser user = plugin.getUser(playerName);
+            final IUser user = plugin.getUser(playerName);
             return user.getMoney();
         } catch (UserNotExistsException e) {
             return 0;

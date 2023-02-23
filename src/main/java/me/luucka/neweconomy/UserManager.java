@@ -8,10 +8,11 @@ import me.luucka.neweconomy.api.UserNotExistsException;
 import me.luucka.neweconomy.config.IConfig;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UserMap implements IConfig {
+public class UserManager implements IConfig {
 
     private final NewEconomy plugin;
 
@@ -19,26 +20,26 @@ public class UserMap implements IConfig {
     private final UUIDMap uuidMap;
 
     @Getter
-    private final ConcurrentHashMap<String, UUID> nameUUID = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, UUID> playernameUuidMap = new ConcurrentHashMap<>();
 
-    private final Cache<UUID, User> userCache = CacheBuilder.newBuilder().maximumSize(500).build();
+    private final Cache<UUID, User> users = CacheBuilder.newBuilder().maximumSize(500).build();
 
-    public UserMap(final NewEconomy plugin) {
+    public UserManager(final NewEconomy plugin) {
         this.plugin = plugin;
-        this.uuidMap = new UUIDMap(this.plugin);
+        this.uuidMap = new UUIDMap(plugin);
     }
 
-    public void loadNameUUID() {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> uuidMap.loadNameUUID(nameUUID));
+    public void loadPlayernameUuidMap() {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> uuidMap.loadPlayernameUuidMap(playernameUuidMap));
     }
 
-    public void addNameUUID(final Player player) {
-        nameUUID.put(player.getName().toLowerCase(), player.getUniqueId());
+    public void addPlayernameUuidToMap(final Player player) {
+        playernameUuidMap.put(player.getName().toLowerCase(), player.getUniqueId());
         uuidMap.writeUUIDMap();
     }
 
     public IUser getUser(final String name) throws UserNotExistsException {
-        final UUID uuid = nameUUID.get(name.toLowerCase());
+        final UUID uuid = playernameUuidMap.get(name.toLowerCase());
         if (uuid == null) {
             throw new UserNotExistsException(plugin.getMessages().getUserNotExists(name));
         }
@@ -46,26 +47,26 @@ public class UserMap implements IConfig {
     }
 
     public IUser getUser(final OfflinePlayer player) {
-        IUser user = userCache.getIfPresent(player.getUniqueId());
+        IUser user = users.getIfPresent(player.getUniqueId());
         while (user == null) {
             loadUser(player);
-            user = userCache.getIfPresent(player.getUniqueId());
+            user = users.getIfPresent(player.getUniqueId());
         }
         return user;
     }
 
     public void loadUser(final OfflinePlayer player) {
-        userCache.put(player.getUniqueId(), new User(plugin, player));
+        users.put(player.getUniqueId(), new User(plugin, player));
     }
 
     public void unloadUser(final OfflinePlayer player) {
-        userCache.invalidate(player.getUniqueId());
+        users.invalidate(player.getUniqueId());
     }
 
     @Override
     public void reloadConfig() {
-        userCache.invalidateAll();
+        users.invalidateAll();
         uuidMap.forceWriteUUIDMap();
-        loadNameUUID();
+        loadPlayernameUuidMap();
     }
 }

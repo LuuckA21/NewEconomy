@@ -35,7 +35,8 @@ public class EconomyCommand extends BaseCommand {
             throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
         }
 
-        if (cmd != CommandType.RESET && args.length < 3) throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
+        if (cmd != CommandType.RESET && args.length < 3)
+            throw new Exception(plugin.getMessages().getCommandUsage(getUsage()));
 
         user = plugin.getUser(args[1]);
 
@@ -43,7 +44,7 @@ public class EconomyCommand extends BaseCommand {
             money = cmd == CommandType.RESET ? plugin.getSettings().getStartMoney() : Integer.parseInt(args[2]);
             if (money < 0) throw new NumberFormatException();
         } catch (final NumberFormatException ex) {
-            throw new Exception("<red>Please insert a positive integer");
+            throw new Exception("<red>Please insert a positive value");
         }
 
         switch (cmd) {

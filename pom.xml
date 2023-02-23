@@ -6,7 +6,7 @@
 
     <groupId>me.luucka</groupId>
     <artifactId>NewEconomy</artifactId>
-    <version>Build-15</version>
+    <version>Build-16</version>
     <packaging>jar</packaging>
 
     <name>NewEconomy</name>
@@ -17,16 +17,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <libs.vault>1.7</libs.vault>
-        <libs.placeholderapi>2.11.1</libs.placeholderapi>
+        <libs.placeholderapi>2.11.2</libs.placeholderapi>
 
-        <libs.lombok>1.18.24</libs.lombok>
+        <libs.lombok>1.18.26</libs.lombok>
         <libs.configurate-yaml>4.1.2</libs.configurate-yaml>
 
         <libs.hikaricp>5.0.1</libs.hikaricp>
-        <libs.mysql>8.0.31</libs.mysql>
-        <libs.mariadb>3.1.0</libs.mariadb>
-        <libs.postgresql>42.5.1</libs.postgresql>
-        <libs.sqlite>3.40.0.0</libs.sqlite>
+        <libs.mysql>8.0.32</libs.mysql>
+        <libs.mariadb>3.1.2</libs.mariadb>
+        <libs.postgresql>42.5.4</libs.postgresql>
+        <libs.sqlite>3.40.1.0</libs.sqlite>
         <libs.h2>2.1.214</libs.h2>
 
     </properties>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
